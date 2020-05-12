@@ -134,7 +134,7 @@ def getProcessPID(process):
     elif OS['platform'] == 'Windows':
         _tlcall = 'TASKLIST', '/FI', 'imagename eq {}'.format(os.path.basename(process))
         _syscmd = subprocess.Popen(_tlcall, shell=True, stdout=subprocess.PIPE)
-        PID = _syscmd.communicate()[0].splitlines()
+        PID = _syscmd.stdout.read().splitlines()
         if len(PID) > 1 and os.path.basename(process) in PID[-1]:
             return PID[-1].split()[1]
         else:
