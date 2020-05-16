@@ -1,0 +1,406 @@
+# XBMC Media Center language file
+# Addon Name: Record & Power Manager
+# Addon id: service.rpm
+# Addon version: 3.0.0+matrix
+# Addon Provider: Birger Jesch
+msgid ""
+msgstr ""
+"Project-Id-Version: XBMC-Addons\n"
+"Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en_GB\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+msgctxt "Addon Summary"
+msgid "Record &amp; Power Manager"
+msgstr ""
+
+msgctxt "Addon Description"
+msgid "Recording and power management for current active recordings and wakeup procedures for future schedules using JSON-RPC on a standalone HTPC with TV card and a PVR server. Prevents shutdown/poweroff the system while an active task is running. Ability to start the system periodically to pull EPG-Updates if there is a longer inactivity time of the system."
+msgstr ""
+
+msgctxt "#30000"
+msgid "Boot time until system is ready"
+msgstr ""
+
+msgctxt "#30001"
+msgid "Shutdown time until system is off"
+msgstr ""
+
+msgctxt "#30003"
+msgid "Display countdown of shutdown confirmation for"
+msgstr ""
+
+msgctxt "#30004"
+msgid "Max delay until PVR is active"
+msgstr ""
+
+msgctxt "#30005"
+msgid "Shutdown method"
+msgstr ""
+
+msgctxt "#30006"
+msgid "Power off"
+msgstr ""
+
+msgctxt "#30007"
+msgid "Show notification of next schedule"
+msgstr ""
+
+msgctxt "#30008"
+msgid "Shutdown performed by"
+msgstr ""
+
+msgctxt "#30009"
+msgid "Shutdown requires admin privileges"
+msgstr ""
+
+msgctxt "#30010"
+msgid "Shutdown in progress"
+msgstr ""
+
+msgctxt "#30011"
+msgid "%s seconds remaining. Press OK to abort."
+msgstr ""
+
+msgctxt "#30012"
+msgid "Kodi"
+msgstr ""
+
+msgctxt "#30013"
+msgid "OS (Linux only)"
+msgstr ""
+
+msgctxt "#30014"
+msgid "No wakeup timer is set"
+msgstr ""
+
+msgctxt "#30015"
+msgid "Shutdown aborted"
+msgstr ""
+
+msgctxt "#30016"
+msgid "upcoming recording"
+msgstr ""
+
+msgctxt "#30017"
+msgid "Next schedule"
+msgstr ""
+
+msgctxt "#30018"
+msgid "{} - recording file"
+msgstr ""
+
+msgctxt "#30019"
+msgid "{} - EPG update"
+msgstr ""
+
+msgctxt "#30020"
+msgid "running or upcoming recording"
+msgstr ""
+
+msgctxt "#30021"
+msgid "EPG update still running"
+msgstr ""
+
+msgctxt "#30022"
+msgid "At least one active monitored process"
+msgstr ""
+
+msgctxt "#30023"
+msgid "At least one active network connection"
+msgstr ""
+
+msgctxt "#30024"
+msgid "Setting wakeup timer at"
+msgstr ""
+
+msgctxt "#30025"
+msgid "Y.A.R.D.2 RTC"
+msgstr ""
+
+msgctxt "#30026"
+msgid "Suspend"
+msgstr ""
+
+msgctxt "#30027"
+msgid "Waiting for PVR response"
+msgstr ""
+
+msgctxt "#30028"
+msgid "PVR currently not available"
+msgstr ""
+
+msgctxt "#30030"
+msgid "Communication error"
+msgstr ""
+
+msgctxt "#30031"
+msgid "Can't connect to PVR client"
+msgstr ""
+
+msgctxt "#30032"
+msgid "PVR client inactive or not installed"
+msgstr ""
+
+msgctxt "#30034"
+msgid "Check for established network connections"
+msgstr ""
+
+msgctxt "#30035"
+msgid "Check for running tasks and scripts"
+msgstr ""
+
+msgctxt "#30036"
+msgid "Monitored tasks and scripts"
+msgstr ""
+
+msgctxt "#30037"
+msgid "Monitored ports"
+msgstr ""
+
+msgctxt "#30038"
+msgid "Monitored ports, separated by comma"
+msgstr ""
+
+msgctxt "#30039"
+msgid "Monitored tasks and scripts, separated by comma"
+msgstr ""
+
+msgctxt "#30040"
+msgid "Record & Power Manager"
+msgstr ""
+
+#empty strings from id 30041 t0 30049
+
+msgctxt "#30050"
+msgid "General"
+msgstr ""
+
+#empty strings from id 30051 to 30052
+
+msgctxt "#30053"
+msgid "EPG Update"
+msgstr ""
+
+#empty strings from id 30054 t0 30057
+
+msgctxt "#30058"
+msgid "Path to XMLTV socket"
+msgstr ""
+
+msgctxt "#30059"
+msgid "Store epg.xml in folder"
+msgstr ""
+
+msgctxt "#30060"
+msgid "Use internal EPG Grabber Script (XMLTV)"
+msgstr ""
+
+msgctxt "#30061"
+msgid "Wakeup for EPG Updates"
+msgstr ""
+
+msgctxt "#30062"
+msgid "Wakeup at"
+msgstr ""
+
+msgctxt "#30063"
+msgid "Duration of EPG Update"
+msgstr ""
+
+msgctxt "#30064"
+msgid "Store EPG Data additionally in file epg.xml"
+msgstr ""
+
+#empty strings from id 30065 t0 30069
+
+msgctxt "#30070"
+msgid "00:00 o'Clock"
+msgstr ""
+
+msgctxt "#30071"
+msgid "01:00 o'Clock"
+msgstr ""
+
+msgctxt "#30072"
+msgid "02:00 o'Clock"
+msgstr ""
+
+msgctxt "#30073"
+msgid "03:00 o'Clock"
+msgstr ""
+
+msgctxt "#30074"
+msgid "04:00 o'Clock"
+msgstr ""
+
+msgctxt "#30075"
+msgid "05:00 o'Clock"
+msgstr ""
+
+msgctxt "#30076"
+msgid "06:00 o'Clock"
+msgstr ""
+
+msgctxt "#30077"
+msgid "07:00 o'Clock"
+msgstr ""
+
+msgctxt "#30078"
+msgid "08:00 o'Clock"
+msgstr ""
+
+msgctxt "#30079"
+msgid "09:00 o'Clock"
+msgstr ""
+
+msgctxt "#30080"
+msgid "10:00 o'Clock"
+msgstr ""
+
+msgctxt "#30081"
+msgid "11:00 o'Clock"
+msgstr ""
+
+msgctxt "#30082"
+msgid "12:00 o'Clock"
+msgstr ""
+
+msgctxt "#30083"
+msgid "13:00 o'Clock"
+msgstr ""
+
+msgctxt "#30084"
+msgid "14:00 o'Clock"
+msgstr ""
+
+msgctxt "#30085"
+msgid "15:00 o'Clock"
+msgstr ""
+
+msgctxt "#30086"
+msgid "16:00 o'Clock"
+msgstr ""
+
+msgctxt "#30087"
+msgid "17:00 o'Clock"
+msgstr ""
+
+msgctxt "#30088"
+msgid "18:00 o'Clock"
+msgstr ""
+
+msgctxt "#30089"
+msgid "19:00 o'Clock"
+msgstr ""
+
+msgctxt "#30090"
+msgid "20:00 o'Clock"
+msgstr ""
+
+msgctxt "#30091"
+msgid "21:00 o'Clock"
+msgstr ""
+
+msgctxt "#30092"
+msgid "22:00 o'Clock"
+msgstr ""
+
+msgctxt "#30093"
+msgid "23:00 o'Clock"
+msgstr ""
+
+msgctxt "#30094"
+msgid "10 min"
+msgstr ""
+
+msgctxt "#30095"
+msgid "20 min"
+msgstr ""
+
+msgctxt "#30096"
+msgid "30 min"
+msgstr ""
+
+msgctxt "#30097"
+msgid "40 min"
+msgstr ""
+
+msgctxt "#30098"
+msgid "50 min"
+msgstr ""
+
+msgctxt "#30099"
+msgid "60 min"
+msgstr ""
+
+msgctxt "#30100"
+msgid "off"
+msgstr ""
+
+msgctxt "#30101"
+msgid "every Day"
+msgstr ""
+
+msgctxt "#30102"
+msgid "2 Days"
+msgstr ""
+
+msgctxt "#30103"
+msgid "3 Days"
+msgstr ""
+
+msgctxt "#30104"
+msgid "4 Days"
+msgstr ""
+
+msgctxt "#30105"
+msgid "5 Days"
+msgstr ""
+
+msgctxt "#30106"
+msgid "6 Days"
+msgstr ""
+
+msgctxt "#30107"
+msgid "7 Days"
+msgstr ""
+
+msgctxt "#30108"
+msgid "5 sec"
+msgstr ""
+
+msgctxt "#30109"
+msgid "10 sec"
+msgstr ""
+
+msgctxt "#30110"
+msgid "15 sec"
+msgstr ""
+
+msgctxt "#30111"
+msgid "30 sec"
+msgstr ""
+
+msgctxt "#30112"
+msgid "45 sec"
+msgstr ""
+
+msgctxt "#30113"
+msgid "60 sec"
+msgstr ""
+
+msgctxt "#30114"
+msgid "90 sec"
+msgstr ""
+
+msgctxt "#30115"
+msgid "120 sec"
+msgstr ""

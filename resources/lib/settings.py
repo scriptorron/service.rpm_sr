@@ -1,7 +1,8 @@
-settingsdefs = dict({'status': NUM, 'pvr_delay': NUM, 'margin_start': NUM, 'margin_stop': NUM, 'notification_time': NUM,
-                     'shutdown_method': NUM, 'sudo': BOOL, 'shutdown_mode': NUM, 'show_next_sched': BOOL,
-                     'check_network': BOOL, 'monitored_ports': NUM, 'check_postprocesses': BOOL,
-                     'monitored_processes': STRING, 'smtp_sendmail': BOOL, 'smtp_server': STRING, 'smtp_user': STRING,
-                     'smtp_passwd': STRING, 'smtp_encryption': STRING, 'smtp_from': STRING, 'smtp_to': STRING,
-                     'charset': STRING, 'epgtimer_interval': NUM, 'epgtimer_time': NUM, 'epgtimer_duration': NUM,
-                     'epg_grab_ext': BOOL, 'epg_socket': STRING, 'store_epg': STRING, 'epg_path': STRING})
+from resources.lib.tools import STRING, INT, BOOL
+
+setting_definitions = dict({'pwr_requested': BOOL, 'pwr_notified': BOOL, 'pvr_delay': INT, 'margin_start': INT,
+                            'margin_stop': INT, 'notification_time': INT, 'shutdown_method': INT, 'sudo': BOOL,
+                            'shutdown_mode': INT, 'show_next_sched': BOOL, 'check_network': BOOL,
+                            'monitored_ports': STRING, 'check_postprocesses': BOOL, 'monitored_processes': STRING,
+                            'epgtimer_interval': INT, 'epgtimer_time': INT, 'epgtimer_duration': INT,
+                            'epg_grab_ext': BOOL, 'epg_socket': STRING, 'store_epg': BOOL, 'epg_path': STRING})
