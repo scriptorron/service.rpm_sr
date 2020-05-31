@@ -28,8 +28,9 @@ Installation
 
 2.	If You are using OpenElec/LibreElec/CoreElec, the following step isn’t necessary. Skip to step 3.
 
-        All others: As the shellscript ‘shutdown.sh’ is a wrapper to poweroff the system, it needs root privileges to run properly. 
-        We make it possible that ‘shutdown.sh’ runs under root/sudo privileges without needing to type in a password:
+        All others: As the shellscript ‘shutdown.sh’ is a wrapper to poweroff the system, 
+        it needs root privileges to run properly. We make it possible that ‘shutdown.sh’ runs 
+        under root/sudo privileges without needing to type in a password:
     
             sudo visudo
     
@@ -40,16 +41,12 @@ Installation
     
         Store your changes (CTRL+O, CTRL+X)
 
-3.	Change your remote.xml to point the pvrmanager-addon when "Power" on remote is pressed. If you don't have a remote 
+3.	Change your remote.xml to point the addon when "Power" on remote is pressed. If you don't have a remote 
 control you can also define a special key on your keyboard as power button (here as example F12).
 
-        Create a remote.xml if it doesn't exists (Gotham and up):
+        Create a remote.xml if it doesn't exists:
     
             nano $HOME/.kodi/userdata/keymaps/remote.xml
-            
-        or (OpenELEC/LibreELEC/CoreELEC):
-            
-            nano /storage/.kodi/userdata/keymaps/remote.xml
     
         and copy/paste following code into the editor: 
     
