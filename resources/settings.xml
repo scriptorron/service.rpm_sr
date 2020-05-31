@@ -4,7 +4,7 @@
 		<category help="" id="default" label="30050">
 			<group id="1">
 				<setting help="" id="pvr_delay" label="30004" type="integer">
-					<level>0</level>
+					<level>1</level>
 					<default>10</default>
 					<constraints>
 						<options>
@@ -55,12 +55,12 @@
 					<default>60</default>
 					<constraints>
 						<options>
+							<option label="30108">5</option>
+							<option label="30109">10</option>
 							<option label="30110">15</option>
 							<option label="30111">30</option>
 							<option label="30112">45</option>
 							<option label="30113">60</option>
-							<option label="30114">90</option>
-							<option label="30115">120</option>
 						</options>
 					</constraints>
 					<control format="string" type="spinner"/>
@@ -71,7 +71,7 @@
 					<control type="toggle"/>
 				</setting>
 				<setting help="" id="shutdown_method" label="30008" type="integer">
-					<level>0</level>
+					<level>1</level>
 					<default>0</default>
 					<constraints>
 						<options>
@@ -83,17 +83,12 @@
 					<control format="string" type="spinner"/>
 				</setting>
 				<setting help="" id="sudo" label="30009" type="boolean">
-					<level>0</level>
+					<level>1</level>
 					<default>true</default>
-					<dependencies>
-						<dependency type="enable">
-							<condition operator="is" setting="shutdown_method">1</condition>
-						</dependency>
-					</dependencies>
 					<control type="toggle"/>
 				</setting>
 				<setting help="" id="shutdown_mode" label="30005" type="integer">
-					<level>0</level>
+					<level>1</level>
 					<default>0</default>
 					<constraints>
 						<options>
@@ -266,19 +261,6 @@
 					<control format="path" type="button">
 						<heading>30059</heading>
 					</control>
-				</setting>
-			</group>
-			<!-- settings written by addon -->
-			<group id="3">
-				<setting id="pwr_requested" type="boolean">
-					<level>0</level>
-					<default>false</default>
-					<control type="toggle"/>
-				</setting>
-				<setting id="pwr_notified" type="boolean">
-					<level>0</level>
-					<default>false</default>
-					<control type="toggle"/>
 				</setting>
 			</group>
 		</category>

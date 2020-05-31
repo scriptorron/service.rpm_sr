@@ -23,6 +23,7 @@ INT = 'INT'
 BIN = 'BIN'
 
 KEY_SELECT = 7
+HOME = 10000
 
 TIME_OFFSET = round((datetime.now() - datetime.utcnow()).seconds, -1)
 JSON_TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
@@ -38,19 +39,28 @@ isEPG = 0b00001     # EPG grabbing is or becomes active
 isUSR = 0b00000     # default
 
 
+def setProperty(key, value):
+    xbmcgui.Window(10000).setProperty(str(key), str(value))
+
+
+def getProperty(key):
+    return xbmcgui.Window(10000).getProperty(str(key))
+
+
+def str2bool(value):
+    return True if value.lower() == 'true' else False
+
+
 class Monitor(xbmc.Monitor):
 
     def __init__(self):
         self.settingsChanged = False
-        self.abortBySys = False
         self.hasPVR = False
         self.nextTimer = 0
         self.nextEPG = 0
 
-        self.definitions = dict()        # {'setting_1': None, 'setting_2': BOOL, ...}
-        self.setting = dict()            # returns {'setting_1': value_1, 'setting_2': value_2, ...}
-
-        self.recorder = dict()           # recording list
+        self.settings = dict()        # {'setting_1': None, 'setting_2': BOOL, ...}
+        self.setting = dict()         # returns {'setting_1': value_1, 'setting_2': value_2, ...}
 
     def onSettingsChanged(self):
         self.settingsChanged = True
@@ -66,55 +76,103 @@ class Monitor(xbmc.Monitor):
         self.logSettings(dict(set(self.setting.items()) - set_current))
 
     def onAbortRequested(self):
-        self.abortBySys = True
         log('Abort requested', xbmc.LOGINFO)
 
     def getAddonSettings(self):
-        for setting in self.definitions:
+        for setting in self.settings:
             try:
-                if self.definitions[setting] == BOOL:
+                if self.settings[setting] == BOOL:
                     svalue = addon.getSettingBool(setting)
-                elif self.definitions[setting] == NUM:
+                elif self.settings[setting] == NUM:
                     svalue = addon.getSettingNumber(setting)
-                elif self.definitions[setting] == INT:
+                elif self.settings[setting] == INT:
                     svalue = int(addon.getSetting(setting))
                 else:
                     svalue = addon.getSettingString(setting)
             except (TypeError, ValueError):
                 svalue = addon.getSetting(setting)
                 log('invalid type of {}:{} ({} expected)'.format(setting, svalue,
-                                                                 self.definitions[setting]), xbmc.LOGERROR)
+                                                                 self.settings[setting]), xbmc.LOGERROR)
             self.setting.update({setting: svalue})
 
-    def setAddonSetting(self, setting, value):
-        if self.definitions[setting] == BOOL:
+    def setSetting(self, setting, value):
+        if self.settings[setting] == BOOL:
             addon.setSettingBool(setting, bool(value))
-        elif self.definitions[setting] == NUM:
+        elif self.settings[setting] == NUM:
             addon.setSettingNumber(setting, float(value))
-        elif self.definitions[setting] == INT or self.definitions[setting] == BIN:
+        elif self.settings[setting] == INT or self.settings[setting] == BIN:
             addon.setSetting(setting, int(value))
 
     def logSettings(self, sdict=None):
         if sdict is None:
             sdict = self.setting
         for setting in sdict:
-            if self.definitions[setting] == BIN:
-                log('{:>22}: {:08b} type {}'.format(setting, sdict[setting], self.definitions[setting]))
+            if self.settings[setting] == BIN:
+                log('{:>22}: {:08b} type {}'.format(setting, sdict[setting], self.settings[setting]))
             else:
-                log('{:>22}: {:<} type {}'.format(setting, sdict[setting], self.definitions[setting]))
+                log('{:>22}: {:<} type {}'.format(setting, sdict[setting], self.settings[setting]))
 
     def calcNextEvent(self):
         if self.nextEPG > 0:
             if 0 < self.nextTimer < self.nextEPG:
-                return (30018, self.nextTimer)
+                return 30018, self.nextTimer
             else:
-                return (30019, self.nextEPG)
+                return 30019, self.nextEPG
         elif self.nextTimer > 0:
             if 0 < self.nextEPG < self.nextTimer:
-                return (30019, self.nextEPG)
+                return 30019, self.nextEPG
             else:
-                return (30018, self.nextTimer)
+                return 30018, self.nextTimer
         return False
+
+
+class ProgressBar(object):
+    """
+    creates a dialog progressbar with optional reverse progress
+        :param header: heading line of progressbar
+        :param msg: additional countdown message
+        :param duration: duration of countdown
+        :param steps: amount of steps of the countdown, choosing a value of 2*duration is perfect (actualising
+               every 500 msec)
+        :param reverse: reverse countdown (progressbar from 100 to 0)
+        :returns true if cancel button was pressed, otherwise false
+    """
+
+    def __init__(self, header, msg, duration=5, steps=10, reverse=False):
+
+        self.header = header
+        self.msg = msg
+        self.timeout = 1000 * duration // steps
+        self.steps = 100 // steps
+        self.reverse = reverse
+        self.iscanceled = False
+
+        self.pb = xbmcgui.DialogProgress()
+
+        self.max = 0
+        if self.reverse:
+            self.max = 100
+
+        self.pb.create(self.header, self.msg)
+        self.pb.update(self.max, self.msg)
+
+    def show_progress(self):
+
+        percent = 100
+        while percent >= 0:
+            self.pb.update(self.max, self.msg)
+            if self.pb.iscanceled():
+                self.iscanceled = True
+                break
+
+            percent -= self.steps
+            self.max = 100 - percent
+            if self.reverse:
+                self.max = percent
+            xbmc.sleep(self.timeout)
+
+        self.pb.close()
+        return self.iscanceled
 
 
 class KeyMonitor(xbmcgui.WindowDialog):

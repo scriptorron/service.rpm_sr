@@ -9,21 +9,29 @@ SHUTDOWN_CMD = xbmc.translatePath(os.path.join(addonpath, 'resources', 'lib', 's
 EXTGRABBER = xbmc.translatePath(os.path.join(addonpath, 'resources', 'lib', 'epggrab_ext.sh'))
 
 Mon = Monitor()
-Mon.definitions = setting_definitions
-Mon.setAddonSetting('pwr_requested', False)
-Mon.setAddonSetting('pwr_notified', False)
+Mon.settings = addon_settings
+
+setProperty('pwr_requested', False)
+setProperty('pwr_notified', False)
 
 osv = release()
 log('OS ID is {} {}'.format(osv['ID'], osv['VERSION_ID']), xbmc.LOGINFO)
 if ('libreelec' or 'openelec' or 'coreelec') in osv['ID'].lower() and Mon.setting('sudo'):
-    Mon.setAddonSetting('sudo', False)
+    Mon.setSetting('sudo', False)
     log('Reset wrong setting \'sudo\' to False')
 
 Mon.settingsChanged = False
 Mon.getAddonSettings()
 Mon.logSettings()
 
-cycle = 30
+cycle = 5
+
+
+def countDown():
+    pbar = ProgressBar(loc(30010), loc(30011).format(loc(30040)),
+                       Mon.setting['notification_time'], Mon.setting['notification_time'], reverse=True)
+    pbar.show_progress()
+    return not pbar.iscanceled
 
 
 def checkPvrPresence(quiet=False):
@@ -64,11 +72,15 @@ def getPvrStatus():
                 continue
             if timer['state'] == 'recording':
                 return isREC
-            elif time.mktime(time.strptime(timer['starttime'], JSON_TIME_FORMAT)) - Mon.setting['margin_start'] - \
-                    Mon.setting['margin_stop'] - (timer['startmargin'] * 60) + TIME_OFFSET < int(time.time()):
+            elif time.mktime(time.strptime(timer['starttime'], JSON_TIME_FORMAT)) - \
+                    Mon.setting['margin_start'] - \
+                    Mon.setting['margin_stop'] - \
+                    Mon.setting['notification_time'] - \
+                    (timer['startmargin'] * 60) + TIME_OFFSET < int(time.time()):
                 return isREC
             else:
-                Mon.nextTimer = time.mktime(time.strptime(timer['starttime'], JSON_TIME_FORMAT))
+                Mon.nextTimer = time.mktime(time.strptime(timer['starttime'], JSON_TIME_FORMAT)) - \
+                                Mon.setting['margin_start'] - (timer['startmargin'] * 60)
     return isUSR
 
 
@@ -85,7 +97,7 @@ def getEpgStatus():
                 time.mktime(time.localtime()) < datetime.timestamp(__n) + \
                 (Mon.setting['epgtimer_duration'] * 60):
             return isEPG
-        Mon.nextEPG = datetime.timestamp(__n) - TIME_OFFSET
+        Mon.nextEPG = datetime.timestamp(__n) - Mon.setting['margin_start'] - TIME_OFFSET
         if Mon.nextEPG + Mon.setting['epgtimer_duration'] * 60 < time.mktime(time.localtime()):
             Mon.nextEPG += Mon.setting['epgtimer_interval'] * 86400
     return isUSR
@@ -116,7 +128,7 @@ def getNetworkStatus():
 
 
 def getPwrStatus():
-    if Mon.setting['pwr_requested']:
+    if str2bool(getProperty('pwr_requested')):
         return isPWR
     return isUSR
 
@@ -131,8 +143,17 @@ def getStatusFlags(flags):
 
 def service():
 
-    flags = isUSR
+    flags = getStatusFlags(isUSR)
+    pwr_requested = False
     checkPvrPresence()
+
+    # This is the initial startup after boot, if flags isREC | isEPG are set, a recording
+    # or EPG update is immediately started. set isPWR to true, also set pwr-notified to true
+    # avoid notifications on initial startup
+
+    if flags & (isREC | isEPG):
+        setProperty('pwr_requested', True)
+        setProperty('pwr_notified', True)
 
     while not Mon.waitForAbort(1):
         walker = 0
@@ -141,16 +162,26 @@ def service():
                 break
             if Mon.settingsChanged:
                 break
-            xbmc.sleep(1000)
-            walker += 1
+            if str2bool(getProperty('pwr_requested')) ^ pwr_requested:
+                walker = 0
+                setProperty('pwr_notified', False)
+                pwr_requested = str2bool(getProperty('pwr_requested'))
+                break
+
+            xbmc.sleep(2000)
+            walker += 2
 
         if Mon.settingsChanged:
             Mon.getAddonSettings()
             Mon.settingsChanged = False
 
+        if (xbmc.getGlobalIdleTime() < walker) and str2bool(getProperty('pwr_requested')):
+            setProperty('pwr_requested', False)
+            log('user activity detected, reset power status')
+
         flags = getStatusFlags(flags)
         if flags & isPWR:
-            if not Mon.setting['pwr_notified']:
+            if not str2bool(getProperty('pwr_notified')):
                 if flags & isREC:
                     notify(loc(30015), loc(30020), icon=xbmcgui.NOTIFICATION_WARNING)  # Notify 'Recording in progress'
                 elif flags & isEPG:
@@ -159,10 +190,16 @@ def service():
                     notify(loc(30015), loc(30022), icon=xbmcgui.NOTIFICATION_WARNING)  # Notify 'Postprocessing'
                 elif flags & isNET:
                     notify(loc(30015), loc(30023), icon=xbmcgui.NOTIFICATION_WARNING)  # Notify 'Network active'
-                Mon.setAddonSetting('pwr_notified', True)
+            setProperty('pwr_notified', True)
 
             if not flags & (isREC | isEPG | isPRG | isNET):
+
+                if not countDown():
+                    setProperty('pwr_requested', False)
+                    continue
+
                 # power off
+                _t = 0
                 if Mon.calcNextEvent():
                     _m, _t = Mon.calcNextEvent()
                     _ft = datetime.strftime(datetime.fromtimestamp(_t + TIME_OFFSET), LOCAL_TIME_FORMAT)
@@ -171,6 +208,16 @@ def service():
                 else:
                     log('no schedules')
                     notify(loc(30040), loc(30014))
+
+                log('set RTC to {}'.format(_t))
+                if osv['PLATFORM'] == 'Linux':
+                    sudo = 'sudo ' if Mon.setting['sudo'] else ''
+                    os.system('%s%s %s %s %s' % (sudo, SHUTDOWN_CMD, _t,
+                                                 Mon.setting['shutdown_method'],
+                                                 Mon.setting['shutdown_mode']))
+
+                if Mon.setting['shutdown_method'] == 0 or osv['platform'] == 'Windows':
+                    xbmc.shutdown()
 
 
 if __name__ == '__main__':
