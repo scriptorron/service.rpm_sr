@@ -102,7 +102,7 @@ msgid "{} - EPG update"
 msgstr ""
 
 msgctxt "#30020"
-msgid "running or upcoming recording"
+msgid "upcoming or running recording"
 msgstr ""
 
 msgctxt "#30021"

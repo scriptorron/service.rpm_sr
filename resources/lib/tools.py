@@ -50,6 +50,8 @@ class Monitor(xbmc.Monitor):
         self.definitions = dict()        # {'setting_1': None, 'setting_2': BOOL, ...}
         self.setting = dict()            # returns {'setting_1': value_1, 'setting_2': value_2, ...}
 
+        self.recorder = dict()           # recording list
+
     def onSettingsChanged(self):
         self.settingsChanged = True
         log('Addon settings changed', xbmc.LOGINFO)
@@ -97,9 +99,9 @@ class Monitor(xbmc.Monitor):
             sdict = self.setting
         for setting in sdict:
             if self.definitions[setting] == BIN:
-                log('{:>22}: {:08b} {}'.format(setting, sdict[setting], type(sdict[setting])))
+                log('{:>22}: {:08b} type {}'.format(setting, sdict[setting], self.definitions[setting]))
             else:
-                log('{:>22}: {:<} {}'.format(setting, sdict[setting], type(sdict[setting])))
+                log('{:>22}: {:<} type {}'.format(setting, sdict[setting], self.definitions[setting]))
 
     def calcNextEvent(self):
         if self.nextEPG > 0:

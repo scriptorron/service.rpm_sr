@@ -1,4 +1,4 @@
-import datetime as datetime
+from datetime import datetime
 
 from resources.lib.settings import *
 from resources.lib.tools import *
@@ -54,14 +54,7 @@ def getPvrStatus():
     if not checkPvrPresence(quiet=True):
         return isUSR
 
-    # check for recordings
-    query = {'method': 'PVR.GetProperties', 'params': {'properties': ['recording']}}
-    response = jsonrpc(query)
-
-    if response.get('recording', False):
-        return isREC
-
-    # check for timers
+    # check for recordings and timers
     Mon.nextTimer = 0
     query = {'method': 'PVR.GetTimers', 'params': {'properties': ['starttime', 'startmargin', 'istimerrule', 'state']}}
     response = jsonrpc(query)
@@ -69,10 +62,10 @@ def getPvrStatus():
         for timer in response.get('timers'):
             if timer['istimerrule'] or timer['state'] == 'disabled':
                 continue
-            if time.mktime(time.strptime(timer['starttime'], JSON_TIME_FORMAT)) < time.mktime(time.gmtime()):
-                continue
+            if timer['state'] == 'recording':
+                return isREC
             elif time.mktime(time.strptime(timer['starttime'], JSON_TIME_FORMAT)) - Mon.setting['margin_start'] - \
-                    Mon.setting['margin_stop'] < time.mktime(time.gmtime()):
+                    Mon.setting['margin_stop'] - (timer['startmargin'] * 60) + TIME_OFFSET < int(time.time()):
                 return isREC
             else:
                 Mon.nextTimer = time.mktime(time.strptime(timer['starttime'], JSON_TIME_FORMAT))
@@ -89,9 +82,12 @@ def getEpgStatus():
                                                      minute=0, second=0, microsecond=0)
         if datetime.timestamp(__n) - Mon.setting['margin_start'] - \
                 Mon.setting['margin_stop'] < \
-                time.mktime(time.localtime()) < datetime.timestamp(__n) + (Mon.setting['epgtimer_duration'] * 60):
+                time.mktime(time.localtime()) < datetime.timestamp(__n) + \
+                (Mon.setting['epgtimer_duration'] * 60):
             return isEPG
         Mon.nextEPG = datetime.timestamp(__n) - TIME_OFFSET
+        if Mon.nextEPG + Mon.setting['epgtimer_duration'] * 60 < time.mktime(time.localtime()):
+            Mon.nextEPG += Mon.setting['epgtimer_interval'] * 86400
     return isUSR
 
 
@@ -118,10 +114,12 @@ def getNetworkStatus():
                 return isNET
     return isUSR
 
+
 def getPwrStatus():
     if Mon.setting['pwr_requested']:
         return isPWR
     return isUSR
+
 
 def getStatusFlags(flags):
 
@@ -173,8 +171,6 @@ def service():
                 else:
                     log('no schedules')
                     notify(loc(30040), loc(30014))
-
-
 
 
 if __name__ == '__main__':
