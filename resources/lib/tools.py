@@ -172,6 +172,7 @@ class ProgressBar(object):
             xbmc.sleep(self.timeout)
 
         self.pb.close()
+        xbmc.sleep(self.timeout)
         return self.iscanceled
 
 

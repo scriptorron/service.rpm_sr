@@ -10,10 +10,10 @@
     <platform>all</platform>
     <summary lang="en">Recording &amp; Power Manager</summary>
     <summary lang="de">Recording &amp; Power Manager</summary>
-    <description lang="en">Recording and power management for current active recordings and wakeup procedures for future schedules using JSON-RPC on a standalone HTPC with TV card and a PVR server. Prevents shutdown/poweroff the system by user while an active task is running. Ability to start the system periodically to pull EPG-Updates if there is a longer inactivity time of the system.</description>
-    <description lang="de">Power- und Timer-Management für aktuell laufende Aufnahmen sowie Aufweckmechanismen für spätere timergesteuerte Aufnahmen unter Nutzung von JSON-RPC auf einem HTPC mit TV-Karte und PVR-Server. Das Addon verhindert ein versehentliches Herunterfahren des Systems während einer Aufnahme. Der HTPC kann periodisch zu einer bestimmten Zeit aufgeweckt werden, um z.B das EPG zu aktualisieren.</description>
-    <disclaimer lang="de">Benutzung auf eigene Gefahr. Keine Haftung für nicht gesetzte Timer oder nicht durchgeführte Aufnahmen!</disclaimer>
-    <disclaimer lang="en">Use at your own risk. No liability for not set timers or lack of recording!</disclaimer>
+    <description lang="en">Recording &amp; power manager for current active recordings and wakeup procedures for future schedules using JSON-RPC on a standalone HTPC with TV card and a PVR server. Prevents shutdown/poweroff the system by user while an active task is running. Ability to start the system periodically to pull EPG-Updates if there is a longer inactivity time of the system.</description>
+    <description lang="de">Power- &amp; Timer-Manager für aktuell laufende Aufnahmen sowie Aufweckmechanismen für spätere timergesteuerte Aufnahmen unter Nutzung von JSON-RPC auf einem HTPC mit TV-Karte und PVR-Server. Das Addon verhindert ein versehentliches Herunterfahren des Systems während einer Aufnahme. Der HTPC kann periodisch zu einer bestimmten Zeit aufgeweckt werden, um z.B das EPG zu aktualisieren.</description>
+    <disclaimer lang="de">Benutzung auf eigene Gefahr. Bitte unbedingt die Hinweise zur Einrichtung in der README.md im ZIP lesen.</disclaimer>
+    <disclaimer lang="en">Use at your own risk. Please read the setup instructions in the README.md in the ZIP.</disclaimer>
     <license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
     <forum></forum>
     <website></website>

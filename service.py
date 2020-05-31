@@ -30,8 +30,7 @@ cycle = 5
 def countDown():
     pbar = ProgressBar(loc(30010), loc(30011).format(loc(30040)),
                        Mon.setting['notification_time'], Mon.setting['notification_time'], reverse=True)
-    pbar.show_progress()
-    return not pbar.iscanceled
+    return not pbar.show_progress()
 
 
 def checkPvrPresence(quiet=False):
@@ -209,6 +208,7 @@ def service():
                     log('no schedules')
                     notify(loc(30040), loc(30014))
 
+                xbmc.sleep(5000)
                 log('set RTC to {}'.format(_t))
                 if osv['PLATFORM'] == 'Linux':
                     sudo = 'sudo ' if Mon.setting['sudo'] else ''

@@ -218,35 +218,13 @@
 			</group>
 			<group id="2">
 				<setting help="" id="epg_grab_ext" label="30060" type="boolean">
-					<level>0</level>
+					<level>1</level>
 					<default>false</default>
 					<control type="toggle"/>
 				</setting>
-				<setting help="" id="epg_socket" label="30058" type="string">
-					<level>0</level>
-					<default>/storage/.kodi/userdata/addon_data/service.tvheadend42/epggrab/xmltv.sock</default>
-					<dependencies>
-						<dependency type="enable">
-							<condition operator="is" setting="epg_grab_ext">true</condition>
-						</dependency>
-					</dependencies>
-					<control format="string" type="edit">
-						<heading>30058</heading>
-					</control>
-				</setting>
-				<setting help="" id="store_epg" label="30064" type="boolean">
-					<level>0</level>
-					<default>false</default>
-					<dependencies>
-						<dependency type="enable">
-							<condition operator="is" setting="epg_grab_ext">true</condition>
-						</dependency>
-					</dependencies>
-					<control type="toggle"/>
-				</setting>
-				<setting help="" id="epg_path" label="30059" type="path">
-					<level>0</level>
-					<default/>
+				<setting help="" id="epg_script" label="30058" type="path">
+					<level>1</level>
+					<default>/storage/.kodi/addons/service.rpm/resources/lib/epggrab_ext.sh</default>
 					<constraints>
 						<allowempty>true</allowempty>
 					</constraints>
@@ -254,11 +232,10 @@
 						<dependency type="enable">
 							<and>
 								<condition operator="is" setting="epg_grab_ext">true</condition>
-								<condition operator="is" setting="store_epg">true</condition>
 							</and>
 						</dependency>
 					</dependencies>
-					<control format="path" type="button">
+					<control format="file" type="button">
 						<heading>30059</heading>
 					</control>
 				</setting>

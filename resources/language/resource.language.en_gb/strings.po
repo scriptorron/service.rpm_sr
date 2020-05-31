@@ -192,19 +192,19 @@ msgstr ""
 #empty strings from id 30054 t0 30057
 
 msgctxt "#30058"
-msgid "Path to XMLTV socket"
+msgid "Script path"
 msgstr ""
 
 msgctxt "#30059"
-msgid "Store epg.xml in folder"
+msgid "Select external EPG script"
 msgstr ""
 
 msgctxt "#30060"
-msgid "Use internal EPG Grabber Script (XMLTV)"
+msgid "Use EPG Grabber Script (XMLTV)"
 msgstr ""
 
 msgctxt "#30061"
-msgid "Wakeup for EPG Updates"
+msgid "Interval for EPG Updates"
 msgstr ""
 
 msgctxt "#30062"
