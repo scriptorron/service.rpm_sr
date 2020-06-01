@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from resources.lib.settings import *
 from resources.lib.tools import *
 
@@ -148,7 +146,7 @@ def service():
 
     # This is the initial startup after boot, if flags isREC | isEPG are set, a recording
     # or EPG update is immediately started. set isPWR to true, also set pwr-notified to true
-    # avoid notifications on initial startup
+    # avoiding notifications on initial startup
 
     if flags & (isREC | isEPG):
         setProperty('pwr_requested', True)

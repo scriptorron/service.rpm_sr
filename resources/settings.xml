@@ -200,7 +200,7 @@
 					</constraints>
 					<control format="string" type="spinner"/>
 				</setting>
-				<setting help="" id="epgtimer_duration" label="30063" type="integer">
+				<setting help="" id="epgtimer_duration" label="30054" type="integer">
 					<level>0</level>
 					<default>20 min</default>
 					<constraints>
@@ -217,10 +217,17 @@
 				</setting>
 			</group>
 			<group id="2">
-				<setting help="" id="epg_grab_ext" label="30060" type="boolean">
+				<setting help="" id="epg_mode" label="30063" type="integer">
 					<level>1</level>
-					<default>false</default>
-					<control type="toggle"/>
+					<default>0</default>
+					<constraints>
+						<options>
+							<option label="30065">0</option> <!-- OTA -->
+							<option label="30066">1</option> <!-- use external script -->
+							<option label="30067">2</option> <!-- import XML file in tvh xmltvsock -->
+						</options>
+					</constraints>
+					<control format="string" type="spinner"/>
 				</setting>
 				<setting help="" id="epg_script" label="30058" type="path">
 					<level>1</level>
@@ -229,14 +236,48 @@
 						<allowempty>true</allowempty>
 					</constraints>
 					<dependencies>
-						<dependency type="enable">
+						<dependency type="visible">
 							<and>
-								<condition operator="is" setting="epg_grab_ext">true</condition>
+								<condition operator="is" setting="epg_mode">1</condition>
 							</and>
 						</dependency>
 					</dependencies>
 					<control format="file" type="button">
 						<heading>30059</heading>
+					</control>
+				</setting>
+				<setting help="" id="epg_file" label="30051" type="path">
+					<level>1</level>
+					<default/>
+					<constraints>
+						<allowempty>true</allowempty>
+					</constraints>
+					<dependencies>
+						<dependency type="visible">
+							<and>
+								<condition operator="is" setting="epg_mode">2</condition>
+							</and>
+						</dependency>
+					</dependencies>
+					<control format="file" type="button">
+						<heading>30068</heading>
+					</control>
+				</setting>
+				<setting help="" id="epg_socket" label="30064" type="path">
+					<level>1</level>
+					<default>/storage/.kodi/userdata/addon_data/service.tvheadend42/epggrab/xmltv.sock</default>
+					<constraints>
+						<allowempty>true</allowempty>
+					</constraints>
+					<dependencies>
+						<dependency type="visible">
+							<and>
+								<condition operator="is" setting="epg_mode">2</condition>
+							</and>
+						</dependency>
+					</dependencies>
+					<control format="file" type="button">
+						<heading>30069</heading>
 					</control>
 				</setting>
 			</group>

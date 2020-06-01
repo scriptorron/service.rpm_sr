@@ -33,6 +33,8 @@ msgctxt "#30001"
 msgid "Shutdown time until system is off"
 msgstr ""
 
+#empty strings from id 30002 t0 30002
+
 msgctxt "#30003"
 msgid "Display countdown of shutdown confirmation for"
 msgstr ""
@@ -137,6 +139,8 @@ msgctxt "#30028"
 msgid "PVR currently not available"
 msgstr ""
 
+#empty strings from id 30029 t0 30029
+
 msgctxt "#30030"
 msgid "Communication error"
 msgstr ""
@@ -148,6 +152,8 @@ msgstr ""
 msgctxt "#30032"
 msgid "PVR client inactive or not installed"
 msgstr ""
+
+#empty strings from id 30033 t0 30033
 
 msgctxt "#30034"
 msgid "Check for established network connections"
@@ -183,13 +189,21 @@ msgctxt "#30050"
 msgid "General"
 msgstr ""
 
-#empty strings from id 30051 to 30052
+msgctxt "#30051"
+msgid "Path to EPG XML File"
+msgstr ""
+
+#empty strings from id 30052 to 30052
 
 msgctxt "#30053"
 msgid "EPG Update"
 msgstr ""
 
-#empty strings from id 30054 t0 30057
+msgctxt "#30054"
+msgid "EPG grabber time"
+msgstr ""
+
+#empty strings from id 30055 t0 30057
 
 msgctxt "#30058"
 msgid "Script path"
@@ -200,11 +214,11 @@ msgid "Select external EPG script"
 msgstr ""
 
 msgctxt "#30060"
-msgid "Use EPG Grabber Script (XMLTV)"
+msgid "Use EPG grabber script (XMLTV)"
 msgstr ""
 
 msgctxt "#30061"
-msgid "Interval for EPG Updates"
+msgid "Interval for EPG updates"
 msgstr ""
 
 msgctxt "#30062"
@@ -212,14 +226,32 @@ msgid "Wakeup at"
 msgstr ""
 
 msgctxt "#30063"
-msgid "Duration of EPG Update"
+msgid "EPG grabber"
 msgstr ""
 
 msgctxt "#30064"
-msgid "Store EPG Data additionally in file epg.xml"
+msgid "Path to XMLTV socket"
 msgstr ""
 
-#empty strings from id 30065 t0 30069
+msgctxt "#30065"
+msgid "Use OTA grabber"
+msgstr ""
+
+msgctxt "#30066"
+msgid "Use external script"
+msgstr ""
+
+msgctxt "#30067"
+msgid "Import from XML file via XMLTV socket"
+msgstr ""
+
+msgctxt "#30068"
+msgid "Select EPG XML file"
+msgstr ""
+
+msgctxt "#30069"
+msgid "Path to XMLTV socket (TVHeadend)"
+msgstr ""
 
 msgctxt "#30070"
 msgid "00:00 o'Clock"
