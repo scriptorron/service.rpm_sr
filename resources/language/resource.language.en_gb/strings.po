@@ -33,7 +33,9 @@ msgctxt "#30001"
 msgid "Shutdown time until system is off"
 msgstr ""
 
-#empty strings from id 30002 t0 30002
+msgctxt "#30002"
+msgid "This is the '{}' addon. Before using me You have to set me up and configure properly. To do this, read the README.md inside the ZIP or visit 'https://github.com/b-jesch/service.rpm'"
+msgstr ""
 
 msgctxt "#30003"
 msgid "Display countdown of shutdown confirmation for"
@@ -131,23 +133,13 @@ msgctxt "#30026"
 msgid "Suspend"
 msgstr ""
 
-msgctxt "#30027"
-msgid "Waiting for PVR response"
+#empty strings from id 30027 t0 30028
+
+msgctxt "#30029"
+msgid "Invalid parameter"
 msgstr ""
 
-msgctxt "#30028"
-msgid "PVR currently not available"
-msgstr ""
-
-#empty strings from id 30029 t0 30029
-
-msgctxt "#30030"
-msgid "Communication error"
-msgstr ""
-
-msgctxt "#30031"
-msgid "Can't connect to PVR client"
-msgstr ""
+#empty strings from id 30030 t0 30031
 
 msgctxt "#30032"
 msgid "PVR client inactive or not installed"

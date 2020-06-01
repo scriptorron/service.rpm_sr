@@ -2,15 +2,18 @@ from resources.lib.settings import *
 from resources.lib.tools import *
 
 import time
+import xbmcvfs
+import socket
+import threading
 
 SHUTDOWN_CMD = xbmc.translatePath(os.path.join(addonpath, 'resources', 'lib', 'shutdown.sh'))
-EXTGRABBER = xbmc.translatePath(os.path.join(addonpath, 'resources', 'lib', 'epggrab_ext.sh'))
 
 Mon = Monitor()
 Mon.settings = addon_settings
 
 setProperty('pwr_requested', False)
 setProperty('pwr_notified', False)
+setProperty('epg_exec_done', False)
 
 osv = release()
 log('OS ID is {} {}'.format(osv['ID'], osv['VERSION_ID']), xbmc.LOGINFO)
@@ -25,17 +28,72 @@ Mon.logSettings()
 cycle = 5
 
 
+class EpgThread(threading.Thread):
+    def __init__(self, mode=None):
+        threading.Thread.__init__(self)
+        self.mode = mode
+
+    def run(self):
+        if self.mode == 0:
+            pass
+        elif self.mode == 1:
+            runExtEpg(Mon.setting['epg_script'], Mon.setting['epg_socket'])
+            setProperty('epg_exec_done', True)
+        elif self.mode == 2:
+            copy2Socket(Mon.setting['epg_file'], Mon.setting['epg_socket'])
+            setProperty('epg_exec_done', True)
+        else:
+            log('wrong or missing threading parameter: {}'.format(self.mode))
+
+
 def countDown():
-    pbar = ProgressBar(loc(30010), loc(30011).format(loc(30040)),
+    pbar = ProgressBar(loc(30010), loc(30011).format(addonname),
                        Mon.setting['notification_time'], Mon.setting['notification_time'], reverse=True)
     return not pbar.show_progress()
+
+
+def copy2Socket(source, tvhsocket):
+    if xbmcvfs.exists(source) and xbmcvfs.exists(tvhsocket):
+        s = xbmcvfs.File(source)
+        transfer = True
+        chunks = 0
+        sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        try:
+            sock.connect(tvhsocket)
+            while transfer:
+                chunk = s.readBytes(4096)
+                if not chunk:
+                    log('{} chunks transmitted'.format(chunks))
+                    break
+                sock.send(chunk)
+                chunks += 1
+        except socket.error as e:
+            log('couldn\'t write to socket: {}'.format(e), xbmc.LOGERROR)
+        finally:
+            sock.close()
+            s.close()
+            return True
+    else:
+        log('couldn\'t copy EPG XML source to socket', xbmc.LOGERROR)
+        log('Source file or socket doesn\'t exist. Check your settings', xbmc.LOGERROR)
+    return False
+
+
+def runExtEpg(script, tvhsocket):
+    if osv['PLATFORM'] == 'Linux' and os.path.isfile(script) and os.path.isfile(tvhsocket):
+        try:
+            _comm = subprocess.Popen('%s %s' % (script, tvhsocket),
+                                     stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                     shell=True, universal_newlines=True)
+            while _comm.poll() is None:
+                pass
+        except subprocess.SubprocessError as e:
+            log('Could not start external script: {}'.format(e), xbmc.LOGERROR)
 
 
 def checkPvrPresence(quiet=False):
 
     # check PVR presence
-    if not quiet:
-        notify(loc(30040), loc(30027), icon=xbmcgui.NOTIFICATION_INFO, disptime=3000)
     _delay = Mon.setting['pvr_delay']
     Mon.hasPVR = False
 
@@ -50,7 +108,7 @@ def checkPvrPresence(quiet=False):
     if not Mon.hasPVR:
         log('No response from PVR', xbmc.LOGERROR)
         if not quiet:
-            notify(loc(300409), loc(30032), icon=xbmcgui.NOTIFICATION_WARNING)
+            notify(loc(30040), loc(30032), icon=xbmcgui.NOTIFICATION_WARNING)
     return Mon.hasPVR
 
 
@@ -89,11 +147,12 @@ def getEpgStatus():
         __next = time.mktime(time.localtime()) + (int(time.strftime('%j')) % Mon.setting['epgtimer_interval']) * 86400
         __n = datetime.fromtimestamp(__next).replace(hour=Mon.setting['epgtimer_time'],
                                                      minute=0, second=0, microsecond=0)
-        if datetime.timestamp(__n) - Mon.setting['margin_start'] - \
-                Mon.setting['margin_stop'] < \
-                time.mktime(time.localtime()) < datetime.timestamp(__n) + \
-                (Mon.setting['epgtimer_duration'] * 60):
-            return isEPG
+        if not str2bool(getProperty('epg_exec_done')):
+            if datetime.timestamp(__n) - Mon.setting['margin_start'] - \
+                    Mon.setting['margin_stop'] < \
+                    time.mktime(time.localtime()) < datetime.timestamp(__n) + \
+                    (Mon.setting['epgtimer_duration'] * 60):
+                return isEPG
         Mon.nextEPG = datetime.timestamp(__n) - Mon.setting['margin_start'] - TIME_OFFSET
         if Mon.nextEPG + Mon.setting['epgtimer_duration'] * 60 < time.mktime(time.localtime()):
             Mon.nextEPG += Mon.setting['epgtimer_interval'] * 86400
@@ -151,6 +210,14 @@ def service():
     if flags & (isREC | isEPG):
         setProperty('pwr_requested', True)
         setProperty('pwr_notified', True)
+
+    # start EPG grabber threads
+
+    if flags & isEPG:
+        thread = EpgThread(Mon.setting['epg_mode'])
+        thread.start()
+
+    # ::MAIN LOOP::
 
     while not Mon.waitForAbort(1):
         walker = 0

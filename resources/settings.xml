@@ -152,7 +152,7 @@
 			<group id="1">
 				<setting help="" id="epgtimer_interval" label="30061" type="integer">
 					<level>0</level>
-					<default>2</default>
+					<default>0</default>
 					<constraints>
 						<options>
 							<option label="30100">0</option>
@@ -237,9 +237,7 @@
 					</constraints>
 					<dependencies>
 						<dependency type="visible">
-							<and>
-								<condition operator="is" setting="epg_mode">1</condition>
-							</and>
+							<condition operator="is" setting="epg_mode">1</condition>
 						</dependency>
 					</dependencies>
 					<control format="file" type="button">
@@ -254,9 +252,7 @@
 					</constraints>
 					<dependencies>
 						<dependency type="visible">
-							<and>
-								<condition operator="is" setting="epg_mode">2</condition>
-							</and>
+							<condition operator="is" setting="epg_mode">2</condition>
 						</dependency>
 					</dependencies>
 					<control format="file" type="button">
@@ -271,9 +267,10 @@
 					</constraints>
 					<dependencies>
 						<dependency type="visible">
-							<and>
+							<or>
+								<condition operator="is" setting="epg_mode">1</condition>
 								<condition operator="is" setting="epg_mode">2</condition>
-							</and>
+							</or>
 						</dependency>
 					</dependencies>
 					<control format="file" type="button">
