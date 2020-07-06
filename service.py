@@ -210,6 +210,7 @@ def service():
     if flags & (isREC | isEPG):
         setProperty('pwr_requested', True)
         setProperty('pwr_notified', True)
+        pwr_requested = True
 
     # start EPG grabber threads
 
@@ -219,29 +220,28 @@ def service():
 
     # ::MAIN LOOP::
 
+    walker = 0
     while not Mon.waitForAbort(1):
-        walker = 0
-        while walker < cycle:
-            if Mon.abortRequested():
-                break
-            if Mon.settingsChanged:
-                break
-            if str2bool(getProperty('pwr_requested')) ^ pwr_requested:
-                walker = 0
-                setProperty('pwr_notified', False)
-                pwr_requested = str2bool(getProperty('pwr_requested'))
-                break
+        if Mon.abortRequested():
+            break
 
-            xbmc.sleep(2000)
-            walker += 2
+        if str2bool(getProperty('pwr_requested')) ^ pwr_requested:
+            setProperty('pwr_notified', False)
+            pwr_requested = str2bool(getProperty('pwr_requested'))
 
         if Mon.settingsChanged:
             Mon.getAddonSettings()
             Mon.settingsChanged = False
 
-        if (xbmc.getGlobalIdleTime() < walker) and str2bool(getProperty('pwr_requested')):
+        if (xbmc.getGlobalIdleTime() <= walker) and \
+                str2bool(getProperty('pwr_requested')) and str2bool(getProperty('pwr_notified')):
             setProperty('pwr_requested', False)
+            walker = 0
             log('user activity detected, reset power status')
+
+        walker += 1
+        if walker < cycle:
+            continue
 
         flags = getStatusFlags(flags)
         if flags & isPWR:
@@ -283,6 +283,7 @@ def service():
 
                 if Mon.setting['shutdown_method'] == 0 or osv['platform'] == 'Windows':
                     xbmc.shutdown()
+        walker = 0
 
 
 if __name__ == '__main__':
