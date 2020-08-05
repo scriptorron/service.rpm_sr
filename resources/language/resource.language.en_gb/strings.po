@@ -34,7 +34,7 @@ msgid "Shutdown time until system is off"
 msgstr ""
 
 msgctxt "#30002"
-msgid "This is the '{}' addon. Before using me You have to set me up and configure properly. To do this, read the README.md inside the ZIP or visit 'https://github.com/b-jesch/service.rpm'"
+msgid "This is the »{}« addon. It's important to set me up and configure properly before using me. Please read the README.md inside the ZIP or visit 'https://github.com/b-jesch/service.rpm'."
 msgstr ""
 
 msgctxt "#30003"
@@ -50,7 +50,7 @@ msgid "Shutdown method"
 msgstr ""
 
 msgctxt "#30006"
-msgid "Power off"
+msgid "Power off (recommended)"
 msgstr ""
 
 msgctxt "#30007"
@@ -70,11 +70,11 @@ msgid "Shutdown in progress"
 msgstr ""
 
 msgctxt "#30011"
-msgid "A shutdown is initiated by the '{}' addon. Kodi will power off in several seconds. Press Cancel to abort."
+msgid "A shutdown procedure is performed by the »{}« addon. Kodi will power off in several seconds. Press Cancel to abort."
 msgstr ""
 
 msgctxt "#30012"
-msgid "Kodi"
+msgid "Kodi (use shutdown function)"
 msgstr ""
 
 msgctxt "#30013"
@@ -131,6 +131,10 @@ msgstr ""
 
 msgctxt "#30026"
 msgid "Suspend"
+msgstr ""
+
+msgctxt "#30027"
+msgid "Use device only in server mode"
 msgstr ""
 
 #empty strings from id 30027 t0 30028

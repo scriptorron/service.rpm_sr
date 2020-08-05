@@ -47,8 +47,11 @@ class EpgThread(threading.Thread):
 
 
 def countDown():
-    pbar = ProgressBar(loc(30010), loc(30011).format(addonname),
-                       Mon.setting['notification_time'], Mon.setting['notification_time'], reverse=True)
+    if Mon.setting['server_mode']:
+        pbar = ProgressBar(loc(30010), loc(30011).format(addonname), reverse=True)
+    else:
+        pbar = ProgressBar(loc(30010), loc(30011).format(addonname),
+                           Mon.setting['notification_time'], Mon.setting['notification_time'], reverse=True)
     return not pbar.show_progress()
 
 
@@ -200,7 +203,8 @@ def getStatusFlags(flags):
 def service():
 
     flags = getStatusFlags(isUSR)
-    pwr_requested = False
+    setProperty('pwr_requested', True) if Mon.setting['server_mode'] else setProperty('pwr_requested', False)
+    pwr_requested = True
     checkPvrPresence()
 
     # This is the initial startup after boot, if flags isREC | isEPG are set, a recording
@@ -208,7 +212,7 @@ def service():
     # avoiding notifications on initial startup
 
     if flags & (isREC | isEPG):
-        setProperty('pwr_requested', True)
+        # setProperty('pwr_requested', True)
         setProperty('pwr_notified', True)
         pwr_requested = True
 
@@ -240,7 +244,8 @@ def service():
             log('user activity detected, reset power status')
 
         walker += 1
-        if walker < cycle:
+        log(walker)
+        if walker < cycle and str2bool(getProperty('pwr_notified')):
             continue
 
         flags = getStatusFlags(flags)
@@ -268,10 +273,12 @@ def service():
                     _m, _t = Mon.calcNextEvent()
                     _ft = datetime.strftime(datetime.fromtimestamp(_t + TIME_OFFSET), LOCAL_TIME_FORMAT)
                     log('next schedule: {}'.format(_ft))
-                    notify(loc(30024), loc(_m).format(_ft))
+                    if Mon.setting['show_next_sched'] and not Mon.setting['server_mode']:
+                        notify(loc(30024), loc(_m).format(_ft))
                 else:
                     log('no schedules')
-                    notify(loc(30040), loc(30014))
+                    if Mon.setting['show_next_sched'] and not Mon.setting['server_mode']:
+                        notify(loc(30040), loc(30014))
 
                 xbmc.sleep(5000)
                 log('set RTC to {}'.format(_t))
@@ -288,4 +295,4 @@ def service():
 
 if __name__ == '__main__':
     service()
-    log('Execution finished', xbmc.LOGINFO)
+    log('Service finished', xbmc.LOGINFO)

@@ -14,5 +14,5 @@ if __name__ == '__main__':
         xbmcgui.Dialog().ok(addonname, loc(30002).format(addonname))
 
         # comment this out or delete it (testing)
-        setProperty('pwr_requested', True)
-        setProperty('pwr_notified', False)
+        # setProperty('pwr_requested', True)
+        # setProperty('pwr_notified', False)

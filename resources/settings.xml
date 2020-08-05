@@ -50,6 +50,11 @@
 				</setting>
 			</group>
 			<group id="2">
+				<setting help="" id="server_mode" label="30027" type="boolean">
+					<level>1</level>
+					<default>false</default>
+					<control type="toggle"/>
+				</setting>
 				<setting help="" id="notification_time" label="30003" type="integer">
 					<level>0</level>
 					<default>60</default>
@@ -63,11 +68,21 @@
 							<option label="30113">60</option>
 						</options>
 					</constraints>
+					<dependencies>
+						<dependency type="enable">
+							<condition operator="is" setting="server_mode">false</condition>
+						</dependency>
+					</dependencies>
 					<control format="string" type="spinner"/>
 				</setting>
 				<setting help="" id="show_next_sched" label="30007" type="boolean">
 					<level>0</level>
-					<default>false</default>
+					<default>true</default>
+					<dependencies>
+						<dependency type="enable">
+							<condition operator="is" setting="server_mode">false</condition>
+						</dependency>
+					</dependencies>
 					<control type="toggle"/>
 				</setting>
 				<setting help="" id="shutdown_method" label="30008" type="integer">
