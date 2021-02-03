@@ -1,7 +1,7 @@
 service.rpm
 ===========
 
-PVR 'Recording- & Power Manager NG²' for Kodi. This addon turns your Kodi on a Linux installation (pure Linux, Open-/Core-/LibreELEC) 
+PVR 'Recording- & Power Manager NG²' for Kodi. This addon turns your Kodi on a Linux installation (pure Linux, Open-/LibreELEC) 
 into a full featured video recorder.
 
 This addon handles power management for current active recordings and wakeup procedures for future schedules using 
@@ -13,12 +13,12 @@ inactivity time of the system or user. To collect the individual EPG data the sc
 
 Some installation notes
 -----------------------
-
-1.	YOU KNOW WHAT A TERMINAL CONSOLE IS AND YOU ARE ABLE TO USE IT.
-2.	THIS ADDON USE ACPI-WAKEUP OVER RTC. YOUR MAINBOARD MUST SUPPORT THIS PROPERLY. NOTE THAT IN YOUR APM-SETTINGS OF 
+1.  THIS ADDON WORKS ONLY ON x86 BASED HARDWARE AS IT WRITES WAKEUP INFORMATIONS INTO THE HARDWARE (BIOS) RTC. IT DOESN'T WORK ON AML NOR ARM BASED HARDWARE (ANDROID BOXES, RASPBERRY OR SIMILAR HARDWARE)
+2.	YOU KNOW WHAT A TERMINAL CONSOLE IS AND YOU ARE ABLE TO USE IT.
+3.	THIS ADDON USE ACPI-WAKEUP OVER RTC. YOUR MAINBOARD MUST SUPPORT THIS PROPERLY. NOTE THAT IN YOUR APM-SETTINGS OF 
     YOUR BOARD THE RTC WAKEUP SHOULD BE SET TO ‘by OS’ OR ‘disabled’. YOU CAN ALSO USE A SPECIAL USB REMOTE CONTROLLER 'Y.A.R.D.2'. 
     IF THIS IS CHOOSEN, THE RTC OF Y.A.R.D.2 IS USED. USEFULL FOR BOARDS WITHOUT RTC (RASPBERRY & CO.)
-3.	PURE LINUX: THIS README USES ```kodi``` AS THE DEFAULT USER. IF KODI IS RUNNING WITH A DIFFERENT USERNAME, CHANGE ALL 
+4.	PURE LINUX: THIS README USES ```kodi``` AS THE DEFAULT USER. IF KODI IS RUNNING WITH A DIFFERENT USERNAME, CHANGE ALL 
 OCCURENCES OF ```/home/kodi/``` TO ```/home/yourusername/``` IN YOUR PATHNAMES/NAMES.
 
 Installation
@@ -26,7 +26,7 @@ Installation
 
 1.	Install this Addon from ZIP or from Repository
 
-2.	If You are using OpenElec/LibreElec/CoreElec, the following step isn’t necessary. Skip to step 3.
+2.	If You are using OpenElec/LibreElec, the following step isn’t necessary. Skip to step 3.
 
         All others: As the shellscript ‘shutdown.sh’ is a wrapper to poweroff the system, 
         it needs root privileges to run properly. We make it possible that ‘shutdown.sh’ runs 
