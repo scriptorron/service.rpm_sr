@@ -6,26 +6,25 @@ import xbmcvfs
 import socket
 import threading
 
-SHUTDOWN_CMD = xbmc.translatePath(os.path.join(addonpath, 'resources', 'lib', 'shutdown.sh'))
+SHUTDOWN_CMD = xbmcvfs.translatePath(os.path.join(addonpath, 'resources', 'lib', 'shutdown.sh'))
+DEFAULT_CYCLE = 15
 
 Mon = Monitor()
 Mon.settings = addon_settings
 
-setProperty('pwr_requested', False)
-setProperty('pwr_notified', False)
+setProperty('poweroff', False)
+setProperty('observe', False)
 setProperty('epg_exec_done', False)
 
 osv = release()
 log('OS ID is {} {}'.format(osv['ID'], osv['VERSION_ID']), xbmc.LOGINFO)
-if ('libreelec' or 'openelec' or 'coreelec') in osv['ID'].lower() and Mon.setting('sudo'):
+if ('libreelec' or 'openelec') in osv['ID'].lower() and Mon.setting('sudo'):
     Mon.setSetting('sudo', False)
     log('Reset wrong setting \'sudo\' to False')
 
 Mon.settingsChanged = False
 Mon.getAddonSettings()
 Mon.logSettings()
-
-cycle = 5
 
 
 class EpgThread(threading.Thread):
@@ -47,7 +46,7 @@ class EpgThread(threading.Thread):
 
 
 def countDown():
-    if Mon.setting['server_mode']:
+    if Mon.setting['server_mode'] or not Mon.observe:
         pbar = ProgressBar(loc(30010), loc(30011).format(addonname), reverse=True)
     else:
         pbar = ProgressBar(loc(30010), loc(30011).format(addonname),
@@ -94,37 +93,17 @@ def runExtEpg(script, tvhsocket):
             log('Could not start external script: {}'.format(e), xbmc.LOGERROR)
 
 
-def checkPvrPresence(quiet=False):
-
-    # check PVR presence
-    _delay = Mon.setting['pvr_delay']
-    Mon.hasPVR = False
-
-    while _delay > 0 and not Mon.hasPVR:
-        query = {'method': 'PVR.GetProperties', 'params': {'properties': ['available']}}
-        response = jsonrpc(query)
-        if response:
-            Mon.hasPVR = response.get('available', False)
-        xbmc.sleep(1000)
-        _delay -= 1
-
-    if not Mon.hasPVR:
-        log('No response from PVR', xbmc.LOGERROR)
-        if not quiet:
-            notify(loc(30040), loc(30032), icon=xbmcgui.NOTIFICATION_WARNING)
-    return Mon.hasPVR
-
-
 def getPvrStatus():
 
-    if not checkPvrPresence(quiet=True):
-        return isUSR
+    Mon.checkPvrPresence(quiet=True)
+    if not Mon.hasPVR: return isUSR
 
     # check for recordings and timers
     Mon.nextTimer = 0
     query = {'method': 'PVR.GetTimers', 'params': {'properties': ['starttime', 'startmargin', 'istimerrule', 'state']}}
     response = jsonrpc(query)
     if response.get('timers', False):
+        print(response.get('timers'))
         for timer in response.get('timers'):
             if timer['istimerrule'] or timer['state'] == 'disabled':
                 continue
@@ -187,7 +166,7 @@ def getNetworkStatus():
 
 
 def getPwrStatus():
-    if str2bool(getProperty('pwr_requested')):
+    if Mon.waitForShutdown:
         return isPWR
     return isUSR
 
@@ -203,18 +182,15 @@ def getStatusFlags(flags):
 def service():
 
     flags = getStatusFlags(isUSR)
-    setProperty('pwr_requested', True) if Mon.setting['server_mode'] else setProperty('pwr_requested', False)
-    pwr_requested = True
-    checkPvrPresence()
+    Mon.waitForShutdown = True if Mon.setting['server_mode'] else False
 
     # This is the initial startup after boot, if flags isREC | isEPG are set, a recording
-    # or EPG update is immediately started. set isPWR to true, also set pwr-notified to true
+    # or EPG update is immediately started. set 'poweroff' to true, also set 'observe' to true
     # avoiding notifications on initial startup
 
     if flags & (isREC | isEPG):
-        # setProperty('pwr_requested', True)
-        setProperty('pwr_notified', True)
-        pwr_requested = True
+        Mon.waitForShutdown = True
+        Mon.observe = True
 
     # start EPG grabber threads
 
@@ -225,46 +201,46 @@ def service():
     # ::MAIN LOOP::
 
     walker = 0
-    while not Mon.waitForAbort(1):
-        if Mon.abortRequested():
-            break
+    cycle = Mon.setting['idle_time'] if Mon.setting['server_mode'] else DEFAULT_CYCLE
 
-        if str2bool(getProperty('pwr_requested')) ^ pwr_requested:
-            setProperty('pwr_notified', False)
-            pwr_requested = str2bool(getProperty('pwr_requested'))
+    while not Mon.abortRequested():
 
-        if Mon.settingsChanged:
-            Mon.getAddonSettings()
-            Mon.settingsChanged = False
+        while walker < cycle:
+            if Mon.abortRequested():
+                break
 
-        if (xbmc.getGlobalIdleTime() <= walker) and \
-                str2bool(getProperty('pwr_requested')) and str2bool(getProperty('pwr_notified')):
-            setProperty('pwr_requested', False)
-            walker = 0
-            log('user activity detected, reset power status')
+            if Mon.settingsChanged:
+                Mon.getAddonSettings()
+                Mon.settingsChanged = False
 
-        walker += 1
-        log(walker)
-        if walker < cycle and str2bool(getProperty('pwr_notified')):
-            continue
+                # define check interval depending on addon mode
+                cycle = Mon.setting['idle_time'] if Mon.setting['server_mode'] else DEFAULT_CYCLE
+
+            idle = xbmc.getGlobalIdleTime()
+            xbmc.sleep(1000)
+
+            # check for user activity and power off required by user
+            if xbmc.getGlobalIdleTime() < idle:
+                log('user activity detected')
+
+                if str2bool(getProperty('poweroff')):
+                    log('Shutdown required')
+                    Mon.waitForShutdown = True
+                    Mon.observe = False
+                    setProperty('poweroff', False)
+                    break
+                else:
+                    Mon.waitForShutdown = False
+
+            walker += 1
 
         flags = getStatusFlags(flags)
         if flags & isPWR:
-            if not str2bool(getProperty('pwr_notified')):
-                if flags & isREC:
-                    notify(loc(30015), loc(30020), icon=xbmcgui.NOTIFICATION_WARNING)  # Notify 'Recording in progress'
-                elif flags & isEPG:
-                    notify(loc(30015), loc(30021), icon=xbmcgui.NOTIFICATION_WARNING)  # Notify 'EPG-Update'
-                elif flags & isPRG:
-                    notify(loc(30015), loc(30022), icon=xbmcgui.NOTIFICATION_WARNING)  # Notify 'Postprocessing'
-                elif flags & isNET:
-                    notify(loc(30015), loc(30023), icon=xbmcgui.NOTIFICATION_WARNING)  # Notify 'Network active'
-            setProperty('pwr_notified', True)
 
             if not flags & (isREC | isEPG | isPRG | isNET):
 
                 if not countDown():
-                    setProperty('pwr_requested', False)
+                    Mon.waitForShutdown = False
                     continue
 
                 # power off
@@ -290,6 +266,18 @@ def service():
 
                 if Mon.setting['shutdown_method'] == 0 or osv['platform'] == 'Windows':
                     xbmc.shutdown()
+
+            if not Mon.observe:
+                if flags & isREC:
+                    notify(loc(30015), loc(30020), icon=xbmcgui.NOTIFICATION_WARNING)  # Notify 'Recording in progress'
+                elif flags & isEPG:
+                    notify(loc(30015), loc(30021), icon=xbmcgui.NOTIFICATION_WARNING)  # Notify 'EPG-Update'
+                elif flags & isPRG:
+                    notify(loc(30015), loc(30022), icon=xbmcgui.NOTIFICATION_WARNING)  # Notify 'Postprocessing'
+                elif flags & isNET:
+                    notify(loc(30015), loc(30023), icon=xbmcgui.NOTIFICATION_WARNING)  # Notify 'Network active'
+                Mon.observe = True
+
         walker = 0
 
 

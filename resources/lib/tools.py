@@ -56,6 +56,8 @@ class Monitor(xbmc.Monitor):
     def __init__(self):
         self.settingsChanged = False
         self.hasPVR = False
+        self.waitForShutdown = True
+        self.observe = False
         self.nextTimer = 0
         self.nextEPG = 0
 
@@ -124,6 +126,25 @@ class Monitor(xbmc.Monitor):
             else:
                 return 30018, self.nextTimer
         return False
+
+    def checkPvrPresence(self, quiet=False):
+
+        # check PVR presence
+        _delay = self.setting['pvr_delay']
+        self.hasPVR = False
+
+        while _delay > 0 and not self.hasPVR:
+            query = {'method': 'PVR.GetProperties', 'params': {'properties': ['available']}}
+            response = jsonrpc(query)
+            if response:
+                self.hasPVR = response.get('available', False)
+            xbmc.sleep(1000)
+            _delay -= 1
+
+        if not self.hasPVR:
+            log('No response from PVR', xbmc.LOGERROR)
+            if not quiet:
+                notify(loc(30040), loc(30032), icon=xbmcgui.NOTIFICATION_WARNING)
 
 
 class ProgressBar(object):

@@ -55,6 +55,25 @@
 					<default>false</default>
 					<control type="toggle"/>
 				</setting>
+				<setting help="" id="idle_time" label="30028" type="integer">
+					<level>0</level>
+					<default>30</default>
+					<constraints>
+						<options>
+							<option label="30111">30</option>
+							<option label="30112">45</option>
+							<option label="30113">60</option>
+							<option label="30114">120</option>
+							<option label="30115">180</option>
+						</options>
+					</constraints>
+					<dependencies>
+						<dependency type="enable">
+							<condition operator="is" setting="server_mode">true</condition>
+						</dependency>
+					</dependencies>
+					<control format="string" type="spinner"/>
+				</setting>
 				<setting help="" id="notification_time" label="30003" type="integer">
 					<level>0</level>
 					<default>60</default>
