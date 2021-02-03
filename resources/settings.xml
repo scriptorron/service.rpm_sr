@@ -57,7 +57,7 @@
 				</setting>
 				<setting help="" id="idle_time" label="30028" type="integer">
 					<level>0</level>
-					<default>30</default>
+					<default>120</default>
 					<constraints>
 						<options>
 							<option label="30111">30</option>
@@ -66,6 +66,8 @@
 							<option label="30114">90</option>
 							<option label="30115">120</option>
 							<option label="30116">180</option>
+							<option label="30117">300</option>
+							<option label="30118">600</option>
 						</options>
 					</constraints>
 					<dependencies>

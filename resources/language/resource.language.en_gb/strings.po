@@ -434,9 +434,17 @@ msgid "90 sec"
 msgstr ""
 
 msgctxt "#30115"
-msgid "120 sec"
+msgid "2 min"
 msgstr ""
 
 msgctxt "#30116"
-msgid "180 sec"
+msgid "3 min"
+msgstr ""
+
+msgctxt "#30117"
+msgid "5 min"
+msgstr ""
+
+msgctxt "#30118"
+msgid "10 min"
 msgstr ""
