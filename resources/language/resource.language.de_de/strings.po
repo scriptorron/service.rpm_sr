@@ -70,7 +70,7 @@ msgid "Shutdown in progress"
 msgstr "Initialisiere Abschaltung"
 
 msgctxt "#30011"
-msgid "A shutdown procedure is performed by the addon »{}«. Kodi will power off in several seconds. Press Cancel to abort."
+msgid "A shutdown procedure is performed by the »{}« addon. Kodi will power off in several seconds. Press Cancel to abort."
 msgstr "Das Addon »{}« wird das System jetzt abschalten. Kodi wird in wenigen Sekunden beendet. Drücke Abbrechen, um den Prozess aufzuhalten."
 
 msgctxt "#30012"
@@ -83,7 +83,7 @@ msgstr "OS (nur unter Linux)"
 
 msgctxt "#30014"
 msgid "No wakeup timer is set"
-msgstr "Es wurde kein Aufwachtimer gesetzt"
+msgstr "Es wird kein Aufwachtimer gesetzt"
 
 msgctxt "#30015"
 msgid "Shutdown aborted"
