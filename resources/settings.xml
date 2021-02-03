@@ -63,8 +63,9 @@
 							<option label="30111">30</option>
 							<option label="30112">45</option>
 							<option label="30113">60</option>
-							<option label="30114">120</option>
-							<option label="30115">180</option>
+							<option label="30114">90</option>
+							<option label="30115">120</option>
+							<option label="30116">180</option>
 						</options>
 					</constraints>
 					<dependencies>
@@ -144,7 +145,7 @@
 					<default>false</default>
 					<control type="toggle"/>
 				</setting>
-				<setting help="" id="monitored_ports" label="30037" type="string">
+				<setting help="30038" id="monitored_ports" label="30037" type="string">
 					<level>0</level>
 					<default/>
 					<constraints>
@@ -164,7 +165,7 @@
 					<default>false</default>
 					<control type="toggle"/>
 				</setting>
-				<setting help="" id="monitored_processes" label="30036" type="string">
+				<setting help="30039" id="monitored_processes" label="30036" type="string">
 					<level>0</level>
 					<default/>
 					<constraints>

@@ -18,12 +18,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 msgctxt "Addon Summary"
-msgid "Record &amp; Power Manager"
-msgstr ""
+msgid "Record &amp; Power Manager NG²"
+msgstr "Record &amp; Power Manager NG²"
 
 msgctxt "Addon Description"
-msgid "Recording and power management for current active recordings and wakeup procedures for future schedules using JSON-RPC on a standalone HTPC with TV card and a PVR server. Prevents shutdown/poweroff the system while an active task is running. Ability to start the system periodically to pull EPG-Updates if there is a longer inactivity time of the system."
-msgstr ""
+msgid "Recording &amp; Power Manager for current active recordings and wakeup procedures for future schedules using JSON-RPC on a standalone HTPC with TV card and a PVR server. Prevents shutdown/poweroff the system by user while an active task (e.g. recorder, network or process) is monitored and initiate a shutdown/poweroff the system after finishing of user, network or process activities. In addition the system periodically can pull EPG-Updates if there is a longer poweroff cycle of the system."
+msgstr "Aufnahme- und Powermanager für aktuell aktive Aufnahmen und Wakeup-Prozeduren für zukünftige Tasks unter Nutzung von JSON-RPC auf einem HTPC mit TV-Karte und einem PVR-Server. Verhindert das Herunterfahren/Ausschalten des Systems durch den Benutzer, während ein aktiver Task (z.B. Rekorder, Netzwerk oder Prozess) überwacht wird und leitet nach Beendigung von Benutzer-, Netzwerk- oder Prozessaktivitäten ein Herunterfahren/Ausschalten des Systems ein. Darüber hinaus kann das System periodisch EPG-Updates abrufen, wenn das System länger nicht eingeschalten wird."
 
 msgctxt "#30000"
 msgid "Boot time until system is ready"
@@ -135,11 +135,11 @@ msgstr "Bereitschaft"
 
 msgctxt "#30027"
 msgid "Device is primary used as a server"
-msgstr "Gerät wird vorwiegend als Server genutzt"
+msgstr "Gerät wird hauptsächlich als Server genutzt"
 
 msgctxt "#30028"
 msgid "If idle, perform shutdown after"
-msgstr "Wenn keine Prozesse aktiv, Abschaltung auslösen nach"
+msgstr "Wenn inaktiv, Abschaltung auslösen nach"
 
 #empty strings from id 30028 t0 30028
 

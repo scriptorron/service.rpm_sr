@@ -221,15 +221,15 @@ def service():
 
             # check for user activity and power off required by user
             if xbmc.getGlobalIdleTime() < idle:
-                log('user activity detected')
 
                 if str2bool(getProperty('poweroff')):
-                    log('Shutdown required')
+                    log('Shutdown required by user')
                     Mon.waitForShutdown = True
                     Mon.observe = False
                     setProperty('poweroff', False)
                     break
                 else:
+                    log('User activity detected, reset shutdown')
                     Mon.waitForShutdown = False
 
             walker += 1
