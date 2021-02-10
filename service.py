@@ -229,8 +229,9 @@ def service():
                     setProperty('poweroff', False)
                     break
                 else:
-                    log('User activity detected, reset shutdown')
-                    Mon.waitForShutdown = False
+                    if Mon.waitForShutdown:
+                        log('User activity detected, revoke shutdown')
+                        Mon.waitForShutdown = False
 
             walker += 1
 
