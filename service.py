@@ -47,7 +47,7 @@ class EpgThread(threading.Thread):
 
 def countDown():
     if Mon.setting['server_mode'] or not Mon.observe:
-        pbar = ProgressBar(loc(30010), loc(30011).format(addonname), reverse=True)
+        pbar = ProgressBar(loc(30030), loc(30011).format(addonname), reverse=True)
     else:
         pbar = ProgressBar(loc(30010), loc(30011).format(addonname),
                            Mon.setting['notification_time'], Mon.setting['notification_time'], reverse=True)
