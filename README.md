@@ -59,11 +59,11 @@ control you can also define a special key on your keyboard as power button (here
                 <global>
                     <!-- This is the keyboard section -->
                     <keyboard>
-                        <f12>XBMC.RunScript(service.rpm,poweroff)</f12>
+                        <f12>RunScript(service.rpm,poweroff)</f12>
                     </keyboard>
                     <!-- This is the remote section -->
                     <remote>
-                        <power>XBMC.RunScript(service.rpm,poweroff)</power>
+                        <power>RunScript(service.rpm,poweroff)</power>
                     </remote>
                 </global>
             </keymap>
