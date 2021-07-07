@@ -19,7 +19,7 @@ setProperty('epg_exec_done', False)
 
 osv = release()
 log('OS ID is {} {}'.format(osv['ID'], osv['VERSION_ID']), xbmc.LOGINFO)
-if osv['ID'].lower() in ['libreelec', 'openelec', 'ubuntu'] and Mon.setting['sudo']:
+if osv['ID'].lower() in ['libreelec', 'openelec'] and Mon.setting['sudo']:
     Mon.setSetting('sudo', False)
     log('Reset wrong setting \'sudo\' to False')
 
