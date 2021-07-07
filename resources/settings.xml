@@ -82,12 +82,12 @@
 					<default>60</default>
 					<constraints>
 						<options>
-							<option label="30108">5</option>
 							<option label="30109">10</option>
 							<option label="30110">15</option>
 							<option label="30111">30</option>
 							<option label="30112">45</option>
 							<option label="30113">60</option>
+							<option label="30114">90</option>
 						</options>
 					</constraints>
 					<dependencies>

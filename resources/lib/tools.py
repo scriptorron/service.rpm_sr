@@ -159,7 +159,7 @@ class ProgressBar(object):
         :returns true if cancel button was pressed, otherwise false
     """
 
-    def __init__(self, header, msg, duration=5, steps=10, reverse=False):
+    def __init__(self, header, msg, duration=10, steps=20, reverse=False):
 
         self.header = header
         self.msg = msg

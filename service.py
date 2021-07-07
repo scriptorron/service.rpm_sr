@@ -11,6 +11,7 @@ DEFAULT_CYCLE = 15
 
 Mon = Monitor()
 Mon.settings = addon_settings
+Mon.getAddonSettings()
 
 setProperty('poweroff', False)
 setProperty('observe', False)
@@ -18,12 +19,11 @@ setProperty('epg_exec_done', False)
 
 osv = release()
 log('OS ID is {} {}'.format(osv['ID'], osv['VERSION_ID']), xbmc.LOGINFO)
-if ('libreelec' or 'openelec') in osv['ID'].lower() and Mon.setting('sudo'):
+if osv['ID'].lower() in ['libreelec', 'openelec', 'ubuntu'] and Mon.setting['sudo']:
     Mon.setSetting('sudo', False)
     log('Reset wrong setting \'sudo\' to False')
 
 Mon.settingsChanged = False
-Mon.getAddonSettings()
 Mon.logSettings()
 
 
@@ -103,7 +103,6 @@ def getPvrStatus():
     query = {'method': 'PVR.GetTimers', 'params': {'properties': ['starttime', 'startmargin', 'istimerrule', 'state']}}
     response = jsonrpc(query)
     if response.get('timers', False):
-        print(response.get('timers'))
         for timer in response.get('timers'):
             if timer['istimerrule'] or timer['state'] == 'disabled':
                 continue

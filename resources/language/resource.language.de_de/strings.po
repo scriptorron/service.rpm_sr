@@ -135,7 +135,7 @@ msgstr "Bereitschaft"
 
 msgctxt "#30027"
 msgid "Device is primary used as a server"
-msgstr "Gerät wird hauptsächlich als Server genutzt"
+msgstr "Gerät wird vorwiegend als Server genutzt"
 
 msgctxt "#30028"
 msgid "If idle, perform shutdown after"
