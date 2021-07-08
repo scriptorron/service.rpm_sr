@@ -7,7 +7,7 @@
 ## More information about XMLTV: http://wiki.xmltv.org/index.php/Main_Page
 ## XMLTV Project Page: http://sourceforge.net/projects/xmltv/files/
 ##
-## Arguments: S1: path of PyEPG/XMLTV socket of tvheadend
+## Arguments: $1: path of PyEPG/XMLTV socket of tvheadend
 ##
 ## Provider: epgdata.com
 # tv_grab_eu_epgdata --days=4 | nc -U "$1"

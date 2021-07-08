@@ -117,7 +117,7 @@ def getPvrStatus():
             else:
                 Mon.nextTimer = time.mktime(time.strptime(timer['starttime'], JSON_TIME_FORMAT)) - \
                                 Mon.setting['margin_start'] - (timer['startmargin'] * 60)
-            break
+                break
     return isUSR
 
 
