@@ -265,7 +265,7 @@ def service():
                                                  Mon.setting['shutdown_method'],
                                                  Mon.setting['shutdown_mode']))
 
-                if Mon.setting['shutdown_method'] == 0 or osv['platform'] == 'Windows':
+                if Mon.setting['shutdown_method'] == 0 or osv['PLATFORM'] == 'Windows':
                     xbmc.shutdown()
 
             if not Mon.observe:
