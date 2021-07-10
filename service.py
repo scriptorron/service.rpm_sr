@@ -115,8 +115,8 @@ def getPvrStatus():
                     (timer['startmargin'] * 60) + TIME_OFFSET < int(time.time()):
                 return isREC
             else:
-                Mon.nextTimer = time.mktime(time.strptime(timer['starttime'], JSON_TIME_FORMAT)) - \
-                                Mon.setting['margin_start'] - (timer['startmargin'] * 60)
+                Mon.nextTimer = int(time.mktime(time.strptime(timer['starttime'], JSON_TIME_FORMAT)) -
+                                    Mon.setting['margin_start'] - (timer['startmargin'] * 60))
                 break
     return isUSR
 
@@ -135,9 +135,9 @@ def getEpgStatus():
                     time.mktime(time.localtime()) < datetime.timestamp(__n) + \
                     (Mon.setting['epgtimer_duration'] * 60):
                 return isEPG
-        Mon.nextEPG = datetime.timestamp(__n) - Mon.setting['margin_start'] - TIME_OFFSET
+        Mon.nextEPG = int(datetime.timestamp(__n) - Mon.setting['margin_start'] - TIME_OFFSET)
         if Mon.nextEPG + Mon.setting['epgtimer_duration'] * 60 < time.mktime(time.localtime()):
-            Mon.nextEPG += Mon.setting['epgtimer_interval'] * 86400
+            Mon.nextEPG += int(Mon.setting['epgtimer_interval'] * 86400)
     return isUSR
 
 
