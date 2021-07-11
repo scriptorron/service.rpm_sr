@@ -1,3 +1,5 @@
+import xbmc
+
 from resources.lib.settings import *
 from resources.lib.tools import *
 
@@ -5,9 +7,19 @@ import time
 import xbmcvfs
 import socket
 import threading
+import stat
 
 SHUTDOWN_CMD = xbmcvfs.translatePath(os.path.join(addonpath, 'resources', 'lib', 'shutdown.sh'))
+EXTGRABBER = xbmc.translatePath(os.path.join(addonpath, 'resources', 'lib', 'epggrab_ext.sh'))
+
 DEFAULT_CYCLE = 15
+
+# set permissions for SHUTDOWN_CMD/EXTGRABBER, required after installation or update
+
+_sts = os.stat(SHUTDOWN_CMD).st_mode
+_stg = os.stat(EXTGRABBER).st_mode
+if not (_sts & stat.S_IXOTH): os.chmod(SHUTDOWN_CMD, _sts | stat.S_IXOTH)
+if not (_stg & stat.S_IXOTH): os.chmod(EXTGRABBER, _stg | stat.S_IXOTH)
 
 Mon = Monitor()
 Mon.settings = addon_settings
@@ -33,16 +45,17 @@ class EpgThread(threading.Thread):
         self.mode = mode
 
     def run(self):
+        initialize = time.time()
         if self.mode == 0:
-            pass
+            xbmc.sleep(Mon.setting['epgtimer_duration'] * 60000)
         elif self.mode == 1:
             runExtEpg(Mon.setting['epg_script'], Mon.setting['epg_socket'])
-            setProperty('epg_exec_done', True)
         elif self.mode == 2:
             copy2Socket(Mon.setting['epg_file'], Mon.setting['epg_socket'])
-            setProperty('epg_exec_done', True)
         else:
             log('wrong or missing threading parameter: {}'.format(self.mode))
+        setProperty('epg_exec_done', True)
+        log('EPG thread took {} secs'.format(int(time.time() - initialize)))
 
 
 def countDown():
@@ -88,7 +101,7 @@ def runExtEpg(script, tvhsocket):
                                      stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                      shell=True, universal_newlines=True)
             while _comm.poll() is None:
-                pass
+                xbmc.sleep(1000)
         except subprocess.SubprocessError as e:
             log('Could not start external script: {}'.format(e), xbmc.LOGERROR)
 
@@ -116,7 +129,7 @@ def getPvrStatus():
                 return isREC
             else:
                 Mon.nextTimer = int(time.mktime(time.strptime(timer['starttime'], JSON_TIME_FORMAT)) -
-                                    Mon.setting['margin_start'] - (timer['startmargin'] * 60))
+                                    Mon.setting['margin_start'] - (timer['startmargin'] * 60) + TIME_OFFSET)
                 break
     return isUSR
 
@@ -135,7 +148,7 @@ def getEpgStatus():
                     time.mktime(time.localtime()) < datetime.timestamp(__n) + \
                     (Mon.setting['epgtimer_duration'] * 60):
                 return isEPG
-        Mon.nextEPG = int(datetime.timestamp(__n) - Mon.setting['margin_start'] - TIME_OFFSET)
+        Mon.nextEPG = int(datetime.timestamp(__n) - Mon.setting['margin_start'])
         if Mon.nextEPG + Mon.setting['epgtimer_duration'] * 60 < time.mktime(time.localtime()):
             Mon.nextEPG += int(Mon.setting['epgtimer_interval'] * 86400)
     return isUSR
@@ -248,7 +261,7 @@ def service():
                 _t = 0
                 if Mon.calcNextEvent():
                     _m, _t = Mon.calcNextEvent()
-                    _ft = datetime.strftime(datetime.fromtimestamp(_t + TIME_OFFSET), LOCAL_TIME_FORMAT)
+                    _ft = datetime.strftime(datetime.fromtimestamp(_t), LOCAL_TIME_FORMAT)
                     log('next schedule: {}'.format(_ft))
                     if Mon.setting['show_next_sched'] and not Mon.setting['server_mode']:
                         notify(loc(30024), loc(_m).format(_ft))

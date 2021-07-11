@@ -16,7 +16,7 @@
 # tv_grab_eu_egon --days=4 | nc -w 5 -U "$1"
 
 ## Please comment out the next 2 lines!
-echo "This script use socket $1 and will sleep for 5 secs"
-sleep 5
+echo "This script use socket $1 and will sleep for 30 secs"
+sleep 30
 ##
 exit 0

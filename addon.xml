@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="service.rpm" name="Record &amp; Power Manager Service NG²" version="3.0.1+matrix.7" provider-name="Birger Jesch">
+<addon id="service.rpm" name="Record &amp; Power Manager Service NG²" version="3.0.1+matrix.8" provider-name="Birger Jesch">
   <requires>
     <import addon="xbmc.python" version="3.0.0" />
     <import addon="xbmc.json" version="11.2.0" />
@@ -23,5 +23,6 @@
       <icon>resources/icon.png</icon>
       <fanart/>
     </assets>
+    <broken>Due some bugs this addon is marked as broken</broken>
   </extension>
 </addon>
