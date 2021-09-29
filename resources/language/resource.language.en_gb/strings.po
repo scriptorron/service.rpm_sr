@@ -450,3 +450,63 @@ msgstr ""
 msgctxt "#30118"
 msgid "10 min"
 msgstr ""
+
+msgctxt "#30200"
+msgid "Booting time from system switch on until Kodi has initialized"
+msgstr ""
+
+msgctxt "#30201"
+msgid "Time from initiate shutdown until System has powered off"
+msgstr ""
+
+msgctxt "#30203"
+msgid "Duration for displaying a notification for the user"
+msgstr ""
+
+msgctxt "#30204"
+msgid "Wait until PVR is ready and responding"
+msgstr ""
+
+msgctxt "#30205"
+msgid "Preferred shutdown method"
+msgstr ""
+
+msgctxt "#30208"
+msgid "Choose the operating system of this machine"
+msgstr ""
+
+msgctxt "#30209"
+msgid "Some systems (Linux) need root privileges (sudo) to perform system commands"
+msgstr ""
+
+msgctxt "#30227"
+msgid "Use Server mode if system is wake up for Recordings or as server for other clients mainly"
+msgstr ""
+
+msgctxt "#30228"
+msgid "Idle time if server performs a shutdown"
+msgstr ""
+
+msgctxt "#30234"
+msgid "Check this if you want to monitoring network activity"
+msgstr ""
+
+msgctxt "#30235"
+msgid "Check this if you want to monitoring processes running on this machine"
+msgstr ""
+
+msgctxt "#30254"
+msgid "Activity time for wake up. Time must be long enough to perform a complete update of the EPG on the preferred update method"
+msgstr ""
+
+msgctxt "#30261"
+msgid "Interval for waking up this machine to actualize EPG data"
+msgstr ""
+
+msgctxt "#30262"
+msgid "Wake up time"
+msgstr ""
+
+msgctxt "#30263"
+msgid "EPG update method"
+msgstr ""
