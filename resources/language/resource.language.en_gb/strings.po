@@ -472,7 +472,7 @@ msgid "Preferred shutdown method"
 msgstr ""
 
 msgctxt "#30208"
-msgid "Choose the operating system of this machine"
+msgid "Choose the wakeup method provided by Kodi itself, operating system or YARD hardware"
 msgstr ""
 
 msgctxt "#30209"

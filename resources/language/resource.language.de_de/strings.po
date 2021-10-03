@@ -472,8 +472,8 @@ msgid "Preferred shutdown method"
 msgstr "Abschaltmethode"
 
 msgctxt "#30208"
-msgid "Choose the operating system of this machine"
-msgstr "Das Betriebssystem dieser Maschine"
+msgid "Choose the wakeup method provided by Kodi itself, operating system or YARD hardware"
+msgstr "Wähle die Aufwachmethode welche von Kodi, dem OS oder von YARD Hardware ausgeführt wird"
 
 msgctxt "#30209"
 msgid "Some systems (Linux) need root privileges (sudo) to perform system commands"
