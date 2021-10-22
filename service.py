@@ -178,6 +178,17 @@ def getNetworkStatus():
     return isUSR
 
 
+def getTimeFrameStatus():
+
+    # check for active time frame
+    if Mon.setting['main_activity'] and Mon.setting['server_mode']:
+        if Mon.setting['main_activity_start'] * 3600 < \
+                (datetime.now() - datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)).seconds < \
+                Mon.setting['main_activity_stop'] * 3600:
+            return isATF
+    return isUSR
+
+
 def getPwrStatus():
     if Mon.waitForShutdown:
         return isPWR
@@ -186,9 +197,10 @@ def getPwrStatus():
 
 def getStatusFlags(flags):
 
-    _flags = isUSR | getPvrStatus() | getEpgStatus() | getProcessStatus() | getNetworkStatus() | getPwrStatus()
+    _flags = isUSR | getPvrStatus() | getEpgStatus() | getProcessStatus() | getNetworkStatus() | \
+             getTimeFrameStatus() | getPwrStatus()
     if _flags ^ flags:
-        log('Status changed: {:05b} (PWR/NET/PRG/REC/EPG)'.format(_flags), xbmc.LOGINFO)
+        log('Status changed: {:06b} (PWR/ATF/NET/PRG/REC/EPG)'.format(_flags), xbmc.LOGINFO)
     return _flags
 
 
@@ -201,7 +213,7 @@ def service():
     # or EPG update is immediately started. set 'poweroff' to true, also set 'observe' to true
     # avoiding notifications on initial startup
 
-    if flags & (isREC | isEPG):
+    if flags & (isREC | isEPG | isATF):
         Mon.waitForShutdown = True
         Mon.observe = True
 
@@ -251,7 +263,7 @@ def service():
         flags = getStatusFlags(flags)
         if flags & isPWR:
 
-            if not flags & (isREC | isEPG | isPRG | isNET):
+            if not flags & (isREC | isEPG | isPRG | isNET | isATF):
 
                 if not countDown():
                     Mon.waitForShutdown = False
@@ -290,6 +302,8 @@ def service():
                     notify(loc(30015), loc(30022), icon=xbmcgui.NOTIFICATION_WARNING)  # Notify 'Postprocessing'
                 elif flags & isNET:
                     notify(loc(30015), loc(30023), icon=xbmcgui.NOTIFICATION_WARNING)  # Notify 'Network active'
+                elif flags & isATF:
+                    notify(loc(30015), loc(30033), icon=xbmcgui.NOTIFICATION_WARNING)  # Notify 'Time Frame active'
                 Mon.observe = True
 
         walker = 0

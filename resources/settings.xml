@@ -3,21 +3,6 @@
 	<section id="service.rpm">
 		<category help="" id="default" label="30050">
 			<group id="1">
-				<setting help="30204" id="pvr_delay" label="30004" type="integer">
-					<level>1</level>
-					<default>10</default>
-					<constraints>
-						<options>
-							<option label="30108">5</option>
-							<option label="30109">10</option>
-							<option label="30110">15</option>
-							<option label="30111">30</option>
-							<option label="30112">45</option>
-							<option label="30113">60</option>
-						</options>
-					</constraints>
-					<control format="string" type="spinner"/>
-				</setting>
 				<setting help="30200" id="margin_start" label="30000" type="integer">
 					<level>0</level>
 					<default>30</default>
@@ -44,6 +29,21 @@
 							<option label="30113">60</option>
 							<option label="30114">90</option>
 							<option label="30115">120</option>
+						</options>
+					</constraints>
+					<control format="string" type="spinner"/>
+				</setting>
+				<setting help="30204" id="pvr_delay" label="30004" type="integer">
+					<level>1</level>
+					<default>10</default>
+					<constraints>
+						<options>
+							<option label="30108">5</option>
+							<option label="30109">10</option>
+							<option label="30110">15</option>
+							<option label="30111">30</option>
+							<option label="30112">45</option>
+							<option label="30113">60</option>
 						</options>
 					</constraints>
 					<control format="string" type="spinner"/>
@@ -77,6 +77,98 @@
 					</dependencies>
 					<control format="string" type="spinner"/>
 				</setting>
+				<setting help="30231" id="main_activity" label="30031" type="boolean">
+					<level>1</level>
+					<default>false</default>
+					<dependencies>
+						<dependency type="enable">
+							<condition operator="is" setting="server_mode">true</condition>
+						</dependency>
+					</dependencies>
+					<control type="toggle"/>
+				</setting>
+				<setting help="30241" id="main_activity_start" label="30041" type="integer">
+					<level>1</level>
+					<default>18</default>
+					<constraints>
+						<options>
+							<option label="30070">0</option>
+							<option label="30071">1</option>
+							<option label="30072">2</option>
+							<option label="30073">3</option>
+							<option label="30074">4</option>
+							<option label="30075">5</option>
+							<option label="30076">6</option>
+							<option label="30077">7</option>
+							<option label="30078">8</option>
+							<option label="30079">9</option>
+							<option label="30080">10</option>
+							<option label="30081">11</option>
+							<option label="30082">12</option>
+							<option label="30083">13</option>
+							<option label="30084">14</option>
+							<option label="30085">15</option>
+							<option label="30086">16</option>
+							<option label="30087">17</option>
+							<option label="30088">18</option>
+							<option label="30089">19</option>
+							<option label="30090">20</option>
+							<option label="30091">21</option>
+							<option label="30092">22</option>
+							<option label="30093">23</option>
+						</options>
+					</constraints>
+					<dependencies>
+						<dependency type="enable">
+							<and>
+								<condition operator="is" setting="server_mode">true</condition>
+								<condition operator="is" setting="main_activity">true</condition>
+							</and>
+						</dependency>
+					</dependencies>
+					<control format="string" type="spinner"/>
+				</setting>
+				<setting help="30242" id="main_activity_stop" label="30042" type="integer">
+					<level>1</level>
+					<default>22</default>
+					<constraints>
+						<options>
+							<option label="30070">0</option>
+							<option label="30071">1</option>
+							<option label="30072">2</option>
+							<option label="30073">3</option>
+							<option label="30074">4</option>
+							<option label="30075">5</option>
+							<option label="30076">6</option>
+							<option label="30077">7</option>
+							<option label="30078">8</option>
+							<option label="30079">9</option>
+							<option label="30080">10</option>
+							<option label="30081">11</option>
+							<option label="30082">12</option>
+							<option label="30083">13</option>
+							<option label="30084">14</option>
+							<option label="30085">15</option>
+							<option label="30086">16</option>
+							<option label="30087">17</option>
+							<option label="30088">18</option>
+							<option label="30089">19</option>
+							<option label="30090">20</option>
+							<option label="30091">21</option>
+							<option label="30092">22</option>
+							<option label="30093">23</option>
+						</options>
+					</constraints>
+					<dependencies>
+						<dependency type="enable">
+							<and>
+								<condition operator="is" setting="server_mode">true</condition>
+								<condition operator="is" setting="main_activity">true</condition>
+							</and>
+						</dependency>
+					</dependencies>
+					<control format="string" type="spinner"/>
+				</setting>
 				<setting help="30203" id="notification_time" label="30003" type="integer">
 					<level>0</level>
 					<default>60</default>
@@ -92,7 +184,7 @@
 					</constraints>
 					<dependencies>
 						<dependency type="enable">
-							<condition operator="is" setting="server_mode">false</condition>
+							<condition operator="is" setting="server_mode">true</condition>
 						</dependency>
 					</dependencies>
 					<control format="string" type="spinner"/>
@@ -122,6 +214,11 @@
 				<setting help="30209" id="sudo" label="30009" type="boolean">
 					<level>1</level>
 					<default>true</default>
+					<dependencies>
+						<dependency type="enable">
+							<condition operator="is" setting="shutdown_method">1</condition>
+						</dependency>
+					</dependencies>
 					<control type="toggle"/>
 				</setting>
 				<setting help="30205" id="shutdown_mode" label="30005" type="integer">

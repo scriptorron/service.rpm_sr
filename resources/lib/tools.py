@@ -31,12 +31,13 @@ LOCAL_TIME_FORMAT = '{} - {}'.format(xbmc.getRegion('dateshort'), xbmc.getRegion
 
 # binary Flags
 
-isPWR = 0b10000     # Poweroff requested
-isNET = 0b01000     # Network is active
-isPRG = 0b00100     # Processes are active
-isREC = 0b00010     # Recording is or becomes active
-isEPG = 0b00001     # EPG grabbing is or becomes active
-isUSR = 0b00000     # default
+isPWR = 0b100000     # Poweroff requested
+isATF = 0b010000     # Time Frame is active
+isNET = 0b001000     # Network is active
+isPRG = 0b000100     # Processes are active
+isREC = 0b000010     # Recording is or becomes active
+isEPG = 0b000001     # EPG grabbing is or becomes active
+isUSR = 0b000000     # default
 
 
 def setProperty(key, value):
