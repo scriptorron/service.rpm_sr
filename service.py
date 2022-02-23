@@ -115,7 +115,7 @@ def getPvrStatus():
     Mon.nextTimer = 0
     query = {'method': 'PVR.GetTimers', 'params': {'properties': ['starttime', 'startmargin', 'istimerrule', 'state']}}
     response = jsonrpc(query)
-    if response.get('timers', False):
+    if response and response.get('timers', False):
         for timer in response.get('timers'):
             if timer['istimerrule'] or timer['state'] == 'disabled':
                 continue
