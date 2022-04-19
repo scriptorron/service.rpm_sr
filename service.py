@@ -10,7 +10,7 @@ import threading
 import stat
 
 SHUTDOWN_CMD = xbmcvfs.translatePath(os.path.join(addonpath, 'resources', 'lib', 'shutdown.sh'))
-EXTGRABBER = xbmc.translatePath(os.path.join(addonpath, 'resources', 'lib', 'epggrab_ext.sh'))
+EXTGRABBER = xbmcvfs.translatePath(os.path.join(addonpath, 'resources', 'lib', 'epggrab_ext.sh'))
 
 DEFAULT_CYCLE = 15
 
