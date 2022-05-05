@@ -220,6 +220,10 @@ def notify(header, locstring, icon=xbmcgui.NOTIFICATION_INFO, disptime=5000):
     xbmcgui.Dialog().notification(header, locstring, icon=icon, time=disptime)
 
 
+def messageOk(header, locstring):
+    xbmcgui.Dialog().ok(header, locstring)
+
+
 def jsonrpc(query):
     rpc = {"jsonrpc": "2.0", "id": 1}
     rpc.update(query)
@@ -233,7 +237,7 @@ def jsonrpc(query):
 
 
 def release():
-    props = {'PLATFORM': platform.system(), 'HOSTNAME': platform.node()}
+    props = {'PLATFORM': platform.system(), 'HOSTNAME': platform.node(), 'ARCH': platform.machine()}
     if props['PLATFORM'] == 'Linux':
         with open('/etc/os-release', 'r') as _file:
             for line in _file:

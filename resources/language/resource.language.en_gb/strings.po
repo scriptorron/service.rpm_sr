@@ -197,7 +197,17 @@ msgctxt "#30042"
 msgid "Stop"
 msgstr ""
 
-#empty strings from id 30043 t0 30049
+#empty strings from id 30043 t0 30044
+
+msgctxt "#30045"
+msgid "Record & Power Manager - Hardware incompatibility"
+msgstr ""
+
+msgctxt "#30046"
+msgid "Your hardware architecture does not seem to be compatible with the requirements of this addon. The addon is therefore disabled."
+msgstr ""
+
+#empty strings from id 30047 t0 30049
 
 msgctxt "#30050"
 msgid "General"

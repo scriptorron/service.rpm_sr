@@ -9,6 +9,16 @@ import socket
 import threading
 import stat
 
+osv = release()
+if osv.get('ARCH', 'not detected') not in ['i386', 'i686', 'x86_64']:
+    messageOk(loc(30045), loc(30046))
+    query = {'method': 'Addons.SetAddonEnabled', 'params': {'addonid': addonid, 'enabled': False}}
+    if jsonrpc(query) == 'OK':
+        log('Addon disabled due hardware incompatibility: %s' % osv.get('ARCH', 'not detected'), xbmc.LOGINFO)
+    else:
+        log('Could not disable Addon (%s not compatible)' % osv.get('ARCH', 'not detected'), xbmc.LOGERROR)
+    exit(0)
+
 SHUTDOWN_CMD = xbmcvfs.translatePath(os.path.join(addonpath, 'resources', 'lib', 'shutdown.sh'))
 EXTGRABBER = xbmcvfs.translatePath(os.path.join(addonpath, 'resources', 'lib', 'epggrab_ext.sh'))
 
