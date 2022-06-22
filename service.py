@@ -255,18 +255,16 @@ def service():
             xbmc.sleep(1000)
 
             # check for user activity and power off required by user
-            if xbmc.getGlobalIdleTime() < idle:
+            if str2bool(getProperty('poweroff')):
+                log('Shutdown required by user')
+                Mon.waitForShutdown = True
+                Mon.observe = False
+                setProperty('poweroff', False)
+                break
 
-                if str2bool(getProperty('poweroff')):
-                    log('Shutdown required by user')
-                    Mon.waitForShutdown = True
-                    Mon.observe = False
-                    setProperty('poweroff', False)
-                    break
-                else:
-                    if Mon.waitForShutdown:
-                        log('User activity detected, revoke shutdown')
-                        Mon.waitForShutdown = False
+            if xbmc.getGlobalIdleTime() < idle and Mon.waitForShutdown:
+                log('User activity detected, revoke shutdown')
+                Mon.waitForShutdown = False
 
             walker += 1
 
