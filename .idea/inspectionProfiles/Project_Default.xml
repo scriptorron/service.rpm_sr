@@ -10,8 +10,11 @@
       <option name="ignoredIdentifiers">
         <list>
           <option value="YDStreamExtractor" />
+          <option value="simplecache" />
+          <option value="AddonSignals" />
         </list>
       </option>
     </inspection_tool>
+    <inspection_tool class="SqlResolveInspection" enabled="false" level="ERROR" enabled_by_default="false" />
   </profile>
 </component>

@@ -263,8 +263,12 @@ def service():
                 break
 
             if xbmc.getGlobalIdleTime() < idle and Mon.waitForShutdown:
-                log('User activity detected, revoke shutdown')
-                Mon.waitForShutdown = False
+                if not Mon.setting['server_mode'] and not getTimeFrameStatus() and Mon.setting['ignore_useractivity']:
+                    log('User activity detected, revoke shutdown')
+                    Mon.waitForShutdown = False
+                else:
+                    log('Ignore/reset user activity due settings')
+                    Mon.waitForShutdown = True
 
             walker += 1
 

@@ -169,6 +169,19 @@
 					</dependencies>
 					<control format="string" type="spinner"/>
 				</setting>
+				<setting help="30243" id="ignore_useractivity" label="30043" type="boolean">
+					<level>1</level>
+					<default>false</default>
+					<dependencies>
+						<dependency type="enable">
+							<and>
+								<condition operator="is" setting="server_mode">true</condition>
+								<condition operator="is" setting="main_activity">true</condition>
+							</and>
+						</dependency>
+					</dependencies>
+					<control type="toggle"/>
+				</setting>
 				<setting help="30203" id="notification_time" label="30003" type="integer">
 					<level>0</level>
 					<default>60</default>

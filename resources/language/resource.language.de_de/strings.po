@@ -197,7 +197,9 @@ msgctxt "#30042"
 msgid "Stop"
 msgstr "Stop"
 
-#empty strings from id 30043 t0 30044
+msgctxt "#30043"
+msgid "Ignore user activity in main activity time frame"
+msgstr "Ignoriere Nutzeraktivität im Hauptnutzungs-Zeitrahmen"
 
 msgctxt "#30045"
 msgid "Record & Power Manager - Hardware incompatibility"
@@ -528,6 +530,10 @@ msgstr "Beginn der Hauptnutzungszeit"
 msgctxt "#30242"
 msgid "Stop time of main activity time frame. This value must be greater than the start time. Crossing day borders is not allowed."
 msgstr "Ende der Hauptnutzungszeit. Dieser Wert muss größer als der Startwert sein. Ein Überschreiten der Tagesgrenzen ist nicht zulässig."
+
+msgctxt "#30243"
+msgid "This will ignore any user activity while a main activity time frame has set and is active. A shutdown will performed after the time frame has ended if there is no activity after that."
+msgstr "Jede Nutzeraktivität wird während des aktiven Zeitrahmens für die Hauptnutzung ignoriert. Nach Ablauf der Hauptnutzungszeit wird ein Shutdown ausgelöst, sofern danach keine Nutzeraktivität stattfindet."
 
 msgctxt "#30254"
 msgid "Activity time for wake up. Time must be long enough to perform a complete update of the EPG on the preferred update method"

@@ -197,7 +197,9 @@ msgctxt "#30042"
 msgid "Stop"
 msgstr ""
 
-#empty strings from id 30043 t0 30044
+msgctxt "#30043"
+msgid "Ignore user activity in main activity time frame"
+msgstr ""
 
 msgctxt "#30045"
 msgid "Record & Power Manager - Hardware incompatibility"
@@ -526,7 +528,11 @@ msgid "Start time of main activity time frame"
 msgstr ""
 
 msgctxt "#30242"
-msgid "Stop time of main activity time frame"
+msgid "Stop time of main activity time frame. This value must be greater than the start time. Crossing day borders is not allowed."
+msgstr ""
+
+msgctxt "#30243"
+msgid "This will ignore any user activity while a main activity time frame has set and is active. A shutdown will performed after the time frame has ended if there is no activity after that."
 msgstr ""
 
 msgctxt "#30254"

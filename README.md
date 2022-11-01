@@ -31,29 +31,26 @@ Installation
 
 1.	Install this Addon from ZIP or from Repository
 
-2.	If You are using OpenElec/LibreElec, the following step isn’t necessary. Skip to step 3.
+2.	If You are using OpenElec/LibreElec, the following step isn’t necessary. Skip to step 3. All others: As the shellscript ‘shutdown.sh’ is a wrapper to poweroff the system, it needs root privileges to run properly. We make it possible that ‘shutdown.sh’ runs under root/sudo privileges without needing to type in a password:
 
-        All others: As the shellscript ‘shutdown.sh’ is a wrapper to poweroff the system, 
-        it needs root privileges to run properly. We make it possible that ‘shutdown.sh’ runs 
-        under root/sudo privileges without needing to type in a password:
+
+      sudo visudo
     
-            sudo visudo
-    
-        add at the end of the file:
+   add at the end of the file:
         
-            Cmnd_Alias PVR_CMDS = /home/kodi/.kodi/addons/service.rpm/resources/lib/shutdown.sh
-            kodi ALL=NOPASSWD: PVR_CMDS
+      Cmnd_Alias PVR_CMDS = /home/kodi/.kodi/addons/service.rpm/resources/lib/shutdown.sh
+      kodi ALL=NOPASSWD: PVR_CMDS
     
-        Store your changes (CTRL+O, CTRL+X)
+   Store your changes (CTRL+O, CTRL+X)
 
-3.	Change your remote.xml to point the addon when "Power" on remote is pressed. If you don't have a remote 
-control you can also define a special key on your keyboard as power button (here as example F12).
+3. Change your remote.xml to point the addon when "Power" on remote is pressed. If you don't have a remote control you can also define a special key on your keyboard as power button (here as example F12).
 
-        Create a remote.xml if it doesn't exists:
+        
+   Create a remote.xml if it doesn't exists:
     
-            nano $HOME/.kodi/userdata/keymaps/remote.xml
+      nano $HOME/.kodi/userdata/keymaps/remote.xml
     
-        and copy/paste following code into the editor: 
+   and copy/paste following code into the editor: 
     
             <keymap>
                 <global>
@@ -70,7 +67,9 @@ control you can also define a special key on your keyboard as power button (here
 
 4.	Store (CTRL+O, CTRL+X), restart Kodi and enjoy!
 
-5.  Y.A.R.D.2
+
+Y.A.R.D.2
+_________
 
 You have to make sure that your system knows the path to the yard2wakeup executable. Insert this line into the .profile file in your user folder:
 
