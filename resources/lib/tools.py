@@ -253,7 +253,7 @@ def getProcessPID(process):
         _syscmd = subprocess.Popen(['pidof', '-x', process], stdout=subprocess.PIPE)
         PID = _syscmd.stdout.read().strip()
         return PID if bool(PID) else False
-    elif OS['platform'] == 'Windows':
+    elif OS['PLATFORM'] == 'Windows':
         _tlcall = 'TASKLIST', '/FI', 'imagename eq {}'.format(os.path.basename(process))
         _syscmd = subprocess.Popen(_tlcall, shell=True, stdout=subprocess.PIPE)
         PID = _syscmd.stdout.read().splitlines()
