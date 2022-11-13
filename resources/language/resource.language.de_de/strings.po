@@ -1,7 +1,7 @@
 # XBMC Media Center language file
 # Addon Name: Record & Power Manager
-# Addon id: service.rpm
-# Addon version: 3.0.0+matrix
+# Addon id: service.rpm_sr
+# Addon version: 3.0.0+matrix.1.scriptorron
 # Addon Provider: Birger Jesch
 msgid ""
 msgstr ""
@@ -133,9 +133,9 @@ msgctxt "#30026"
 msgid "Suspend"
 msgstr "Bereitschaft"
 
-msgctxt "#30027"
-msgid "Device is primary used as a server"
-msgstr "Gerät wird vorwiegend als Server genutzt"
+#msgctxt "#30027"
+#msgid "Device is primary used as a server"
+#msgstr "Gerät wird vorwiegend als Server genutzt"
 
 msgctxt "#30028"
 msgid "If idle, perform shutdown after"
@@ -198,8 +198,8 @@ msgid "Stop"
 msgstr "Stop"
 
 msgctxt "#30043"
-msgid "Ignore user activity in main activity time frame"
-msgstr "Ignoriere Nutzeraktivität im Hauptnutzungs-Zeitrahmen"
+msgid "Ignore user activity"
+msgstr "Ignoriere Nutzeraktivität"
 
 msgctxt "#30045"
 msgid "Record & Power Manager - Hardware incompatibility"
@@ -475,6 +475,30 @@ msgctxt "#30118"
 msgid "10 min"
 msgstr "10 Min"
 
+msgctxt "#30119"
+msgid "20 min"
+msgstr "20 Min"
+
+msgctxt "#30120"
+msgid "1 hr"
+msgstr "1 Std"
+
+msgctxt "#30121"
+msgid "2 hr"
+msgstr "2 Std"
+
+msgctxt "#30122"
+msgid "4 hr"
+msgstr "4 Std"
+
+msgctxt "#30123"
+msgid "6 hr"
+msgstr "6 Std"
+
+msgctxt "#30124"
+msgid "12 hr"
+msgstr "12 Std"
+
 msgctxt "#30200"
 msgid "Booting time from system switch on until Kodi has initialized"
 msgstr "Bootzeit ab dem Zeitpunkt des Einschaltens bis zur vollständigen Initialisation von Kodi"
@@ -503,12 +527,12 @@ msgctxt "#30209"
 msgid "Some systems (Linux) need root privileges (sudo) to perform system commands"
 msgstr "Einige Systeme benötigen Administrationsrechte (sudo), um Systembefehle ausführen zu können"
 
-msgctxt "#30227"
-msgid "Use Server mode if system is wake up for Recordings or as server for other clients mainly"
-msgstr "Wenn das System vorwiegend für TV-Aufnahmen oder als Videoserver für andere Clients dient, den Servermodus benutzen"
+#msgctxt "#30227"
+#msgid "Use Server mode if system is wake up for Recordings or as server for other clients mainly"
+#msgstr "Wenn das System vorwiegend für TV-Aufnahmen oder als Videoserver für andere Clients dient, den Servermodus benutzen"
 
 msgctxt "#30228"
-msgid "Idle time if server performs a shutdown"
+msgid "Idle time until server performs a shutdown"
 msgstr "Inaktivitätszeit, nach der ein Herunterfahren/Ausschalten ausgelöst wird"
 
 msgctxt "#30231"
@@ -532,8 +556,8 @@ msgid "Stop time of main activity time frame. This value must be greater than th
 msgstr "Ende der Hauptnutzungszeit. Dieser Wert muss größer als der Startwert sein. Ein Überschreiten der Tagesgrenzen ist nicht zulässig."
 
 msgctxt "#30243"
-msgid "This will ignore any user activity while a main activity time frame has set and is active. A shutdown will performed after the time frame has ended if there is no activity after that."
-msgstr "Jede Nutzeraktivität wird während des aktiven Zeitrahmens für die Hauptnutzung ignoriert. Nach Ablauf der Hauptnutzungszeit wird ein Shutdown ausgelöst, sofern danach keine Nutzeraktivität stattfindet."
+msgid "User activities will not reset the idle timer."
+msgstr "Nutzeraktivitäten werden bei der Inaktivitätszeit ignoriert."
 
 msgctxt "#30254"
 msgid "Activity time for wake up. Time must be long enough to perform a complete update of the EPG on the preferred update method"
@@ -550,3 +574,15 @@ msgstr "Aufweckzeit"
 msgctxt "#30263"
 msgid "EPG update method"
 msgstr "EPG Aktualisierungs Methode"
+
+msgctxt "#30400"
+msgid "Hibernate"
+msgstr "Ruhezustand"
+
+msgctxt "#30401"
+msgid "If idle during playback, perform shutdown after"
+msgstr "Wenn inaktiv während Wiedergabe, Abschaltung nach"
+
+msgctxt "#30402"
+msgid "Idle time during playback until server performs a shutdown"
+msgstr "Inaktivitätszeit während Wiedergabe"

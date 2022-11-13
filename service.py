@@ -22,8 +22,6 @@ if osv.get('ARCH', 'not detected') not in ['i386', 'i686', 'x86_64']:
 SHUTDOWN_CMD = xbmcvfs.translatePath(os.path.join(addonpath, 'resources', 'lib', 'shutdown.sh'))
 EXTGRABBER = xbmcvfs.translatePath(os.path.join(addonpath, 'resources', 'lib', 'epggrab_ext.sh'))
 
-DEFAULT_CYCLE = 15
-
 # set permissions for SHUTDOWN_CMD/EXTGRABBER, required after installation or update
 
 _sts = os.stat(SHUTDOWN_CMD).st_mode
@@ -63,13 +61,13 @@ class EpgThread(threading.Thread):
         elif self.mode == 2:
             copy2Socket(Mon.setting['epg_file'], Mon.setting['epg_socket'])
         else:
-            log('wrong or missing threading parameter: {}'.format(self.mode))
+            log('wrong or missing threading parameter: {}'.format(self.mode), xbmc.LOGERROR)
         setProperty('epg_exec_done', True)
-        log('EPG thread took {} secs'.format(int(time.time() - initialize)))
+        log('EPG thread took {} secs'.format(int(time.time() - initialize)), xbmc.LOGINFO)
 
 
 def countDown():
-    if Mon.setting['server_mode'] or not Mon.observe:
+    if not Mon.observe:
         pbar = ProgressBar(loc(30030), loc(30011).format(addonname), reverse=True)
     else:
         pbar = ProgressBar(loc(30010), loc(30011).format(addonname),
@@ -191,7 +189,7 @@ def getNetworkStatus():
 def getTimeFrameStatus():
 
     # check for active time frame
-    if Mon.setting['main_activity'] and Mon.setting['server_mode']:
+    if Mon.setting['main_activity']:
         if Mon.setting['main_activity_start'] * 3600 < \
                 (datetime.now() - datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)).seconds < \
                 Mon.setting['main_activity_stop'] * 3600:
@@ -199,10 +197,8 @@ def getTimeFrameStatus():
     return isUSR
 
 
-def getPwrStatus():
-    if Mon.waitForShutdown:
-        return isPWR
-    return isUSR
+def getPwrStatus(): # obsolete
+    return isPWR
 
 
 def getStatusFlags(flags):
@@ -217,15 +213,8 @@ def getStatusFlags(flags):
 def service():
 
     flags = getStatusFlags(isUSR)
-    Mon.waitForShutdown = True if Mon.setting['server_mode'] else False
-
-    # This is the initial startup after boot, if flags isREC | isEPG are set, a recording
-    # or EPG update is immediately started. set 'poweroff' to true, also set 'observe' to true
-    # avoiding notifications on initial startup
-
-    if flags & (isREC | isEPG | isATF):
-        Mon.waitForShutdown = True
-        Mon.observe = True
+       
+    Mon.observe = True
 
     # start EPG grabber threads
 
@@ -235,67 +224,88 @@ def service():
 
     # ::MAIN LOOP::
 
-    walker = 0
-    cycle = Mon.setting['idle_time'] if Mon.setting['server_mode'] else DEFAULT_CYCLE
+    idle_time = Mon.setting['idle_time']
+    idle_time_playing = Mon.setting['idle_time_playing']
+    cycle = idle_time
 
     while not Mon.abortRequested():
 
+        immediateShutdown = False
+
+        walker = 0
         while walker < cycle:
+            walker += 1
+
             if Mon.abortRequested():
+                log('Shutdown requested by Kodi', xbmc.LOGINFO)
+                immediateShutdown = True
                 break
 
             if Mon.settingsChanged:
                 Mon.getAddonSettings()
                 Mon.settingsChanged = False
+                # use the new idle times
+                idle_time = Mon.setting['idle_time']
+                idle_time_playing = Mon.setting['idle_time_playing']
 
-                # define check interval depending on addon mode
-                cycle = Mon.setting['idle_time'] if Mon.setting['server_mode'] else DEFAULT_CYCLE
+            # define check interval depending on addon mode and playback state
+            if xbmc.Player().isPlaying():
+                log('Playing, using idle_time_playing')
+                cycle = 60 * idle_time_playing
+            else:
+                log('Not playing, using idle_time')
+                cycle = idle_time
+
 
             idle = xbmc.getGlobalIdleTime()
             xbmc.sleep(1000)
+            # User activities will get detected during that sleep only!
+            # Processing time for the other instructions in this while loop is low compared to the sleep time.
+            # Therefore risc to miss a user activity is also low.
 
             # check for user activity and power off required by user
             if str2bool(getProperty('poweroff')):
-                log('Shutdown required by user')
-                Mon.waitForShutdown = True
+                log('Shutdown required by user', xbmc.LOGINFO)
                 Mon.observe = False
                 setProperty('poweroff', False)
                 break
 
-            if xbmc.getGlobalIdleTime() < idle and Mon.waitForShutdown:
-                if not Mon.setting['server_mode'] and not getTimeFrameStatus() and Mon.setting['ignore_useractivity']:
-                    log('User activity detected, revoke shutdown')
-                    Mon.waitForShutdown = False
+            if xbmc.getGlobalIdleTime() < idle: # getGlobalIdleTime resolution is 1 second
+                if Mon.setting['ignore_useractivity']:
+                    log('Ignore user activity due to settings')
                 else:
-                    log('Ignore/reset user activity due settings')
-                    Mon.waitForShutdown = True
+                    log('User activity detected, restart idle timer')
+                    walker = 0
 
-            walker += 1
 
         flags = getStatusFlags(flags)
+        log('Idle time expired, flags={:06b} (PWR/ATF/NET/PRG/REC/EPG)'.format(flags), xbmc.LOGINFO)
         if flags & isPWR:
 
-            if not flags & (isREC | isEPG | isPRG | isNET | isATF):
+            if immediateShutdown or (not flags & (isREC | isEPG | isPRG | isNET | isATF)):
 
-                if not countDown():
-                    Mon.waitForShutdown = False
-                    continue
+                if not immediateShutdown:
+                    # show count down and allow the user to retrigger the idle timer
+                    if not countDown():
+                        continue
 
                 # power off
                 _t = 0
                 if Mon.calcNextEvent():
                     _m, _t = Mon.calcNextEvent()
                     _ft = datetime.strftime(datetime.fromtimestamp(_t), LOCAL_TIME_FORMAT)
-                    log('next schedule: {}'.format(_ft))
-                    if Mon.setting['show_next_sched'] and not Mon.setting['server_mode']:
+                    log('next schedule: {}'.format(_ft), xbmc.LOGINFO)
+                    if Mon.setting['show_next_sched']:
                         notify(loc(30024), loc(_m).format(_ft))
                 else:
-                    log('no schedules')
-                    if Mon.setting['show_next_sched'] and not Mon.setting['server_mode']:
+                    log('no schedules', xbmc.LOGINFO)
+                    if Mon.setting['show_next_sched']:
                         notify(loc(30040), loc(30014))
 
-                xbmc.sleep(5000)
-                log('set RTC to {}'.format(_t))
+                if not immediateShutdown:
+                    xbmc.sleep(5000)
+
+                log('set RTC to {}'.format(_t), xbmc.LOGINFO)
                 if osv['PLATFORM'] == 'Linux':
                     sudo = 'sudo ' if Mon.setting['sudo'] else ''
                     os.system('%s%s %s %s %s' % (sudo, SHUTDOWN_CMD, _t,
@@ -305,20 +315,19 @@ def service():
                 if Mon.setting['shutdown_method'] == 0 or osv['PLATFORM'] == 'Windows':
                     xbmc.shutdown()
 
-            if not Mon.observe:
-                if flags & isREC:
-                    notify(loc(30015), loc(30020), icon=xbmcgui.NOTIFICATION_WARNING)  # Notify 'Recording in progress'
-                elif flags & isEPG:
-                    notify(loc(30015), loc(30021), icon=xbmcgui.NOTIFICATION_WARNING)  # Notify 'EPG-Update'
-                elif flags & isPRG:
-                    notify(loc(30015), loc(30022), icon=xbmcgui.NOTIFICATION_WARNING)  # Notify 'Postprocessing'
-                elif flags & isNET:
-                    notify(loc(30015), loc(30023), icon=xbmcgui.NOTIFICATION_WARNING)  # Notify 'Network active'
-                elif flags & isATF:
-                    notify(loc(30015), loc(30033), icon=xbmcgui.NOTIFICATION_WARNING)  # Notify 'Time Frame active'
-                Mon.observe = True
+            #if not Mon.observe:
+            if flags & isREC:
+                notify(loc(30015), loc(30020), icon=xbmcgui.NOTIFICATION_WARNING)  # Notify 'Recording in progress'
+            elif flags & isEPG:
+                notify(loc(30015), loc(30021), icon=xbmcgui.NOTIFICATION_WARNING)  # Notify 'EPG-Update'
+            elif flags & isPRG:
+                notify(loc(30015), loc(30022), icon=xbmcgui.NOTIFICATION_WARNING)  # Notify 'Postprocessing'
+            elif flags & isNET:
+                notify(loc(30015), loc(30023), icon=xbmcgui.NOTIFICATION_WARNING)  # Notify 'Network active'
+            elif flags & isATF:
+                notify(loc(30015), loc(30033), icon=xbmcgui.NOTIFICATION_WARNING)  # Notify 'Time Frame active'
+            #    Mon.observe = True
 
-        walker = 0
 
 
 if __name__ == '__main__':

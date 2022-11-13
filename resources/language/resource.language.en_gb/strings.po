@@ -1,7 +1,7 @@
 # XBMC Media Center language file
 # Addon Name: Record & Power Manager
-# Addon id: service.rpm
-# Addon version: 3.0.0+matrix
+# Addon id: service.rpm_sr
+# Addon version: 3.0.0+matrix.1.scriptorron
 # Addon Provider: Birger Jesch
 msgid ""
 msgstr ""
@@ -133,9 +133,9 @@ msgctxt "#30026"
 msgid "Suspend"
 msgstr ""
 
-msgctxt "#30027"
-msgid "Device is primary used as a server"
-msgstr ""
+#msgctxt "#30027"
+#msgid "Device is primary used as a server"
+#msgstr ""
 
 msgctxt "#30028"
 msgid "If idle, perform shutdown after"
@@ -198,7 +198,7 @@ msgid "Stop"
 msgstr ""
 
 msgctxt "#30043"
-msgid "Ignore user activity in main activity time frame"
+msgid "Ignore user activity"
 msgstr ""
 
 msgctxt "#30045"
@@ -475,6 +475,30 @@ msgctxt "#30118"
 msgid "10 min"
 msgstr ""
 
+msgctxt "#30119"
+msgid "20 min"
+msgstr ""
+
+msgctxt "#30120"
+msgid "1 hr"
+msgstr ""
+
+msgctxt "#30121"
+msgid "2 hr"
+msgstr ""
+
+msgctxt "#30122"
+msgid "4 hr"
+msgstr ""
+
+msgctxt "#30123"
+msgid "6 hr"
+msgstr ""
+
+msgctxt "#30124"
+msgid "12 hr"
+msgstr ""
+
 msgctxt "#30200"
 msgid "Booting time from system switch on until Kodi has initialized"
 msgstr ""
@@ -503,12 +527,12 @@ msgctxt "#30209"
 msgid "Some systems (Linux) need root privileges (sudo) to perform system commands"
 msgstr ""
 
-msgctxt "#30227"
-msgid "Use Server mode if system is wake up for Recordings or as server for other clients mainly"
-msgstr ""
+#msgctxt "#30227"
+#msgid "Use Server mode if system is wake up for Recordings or as server for other clients mainly"
+#msgstr ""
 
 msgctxt "#30228"
-msgid "Idle time if server performs a shutdown"
+msgid "Idle time until server performs a shutdown"
 msgstr ""
 
 msgctxt "#30231"
@@ -532,7 +556,7 @@ msgid "Stop time of main activity time frame. This value must be greater than th
 msgstr ""
 
 msgctxt "#30243"
-msgid "This will ignore any user activity while a main activity time frame has set and is active. A shutdown will performed after the time frame has ended if there is no activity after that."
+msgid "User activities will not reset the idle timer."
 msgstr ""
 
 msgctxt "#30254"
@@ -549,4 +573,16 @@ msgstr ""
 
 msgctxt "#30263"
 msgid "EPG update method"
+msgstr ""
+
+msgctxt "#30400"
+msgid "Hibernate"
+msgstr ""
+
+msgctxt "#30401"
+msgid "If idle during playback, perform shutdown after"
+msgstr ""
+
+msgctxt "#30402"
+msgid "Idle time during playback until server performs a shutdown"
 msgstr ""

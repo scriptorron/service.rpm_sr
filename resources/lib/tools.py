@@ -57,7 +57,6 @@ class Monitor(xbmc.Monitor):
     def __init__(self):
         self.settingsChanged = False
         self.hasPVR = False
-        self.waitForShutdown = True
         self.observe = False
         self.nextTimer = 0
         self.nextEPG = 0

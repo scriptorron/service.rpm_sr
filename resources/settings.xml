@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <settings version="1">
-	<section id="service.rpm">
+	<section id="service.rpm_sr">
 		<category help="" id="default" label="30050">
 			<group id="1">
 				<setting help="30200" id="margin_start" label="30000" type="integer">
 					<level>0</level>
-					<default>30</default>
+					<default>180</default>
 					<constraints>
 						<options>
 							<option label="30110">15</option>
@@ -14,13 +14,16 @@
 							<option label="30113">60</option>
 							<option label="30114">90</option>
 							<option label="30115">120</option>
+							<option label="30116">180</option>
+							<option label="30117">300</option>
+							<option label="30118">600</option>
 						</options>
 					</constraints>
 					<control format="string" type="spinner"/>
 				</setting>
 				<setting help="30201" id="margin_stop" label="30001" type="integer">
 					<level>0</level>
-					<default>30</default>
+					<default>180</default>
 					<constraints>
 						<options>
 							<option label="30110">15</option>
@@ -29,6 +32,9 @@
 							<option label="30113">60</option>
 							<option label="30114">90</option>
 							<option label="30115">120</option>
+							<option label="30116">180</option>
+							<option label="30117">300</option>
+							<option label="30118">600</option>
 						</options>
 					</constraints>
 					<control format="string" type="spinner"/>
@@ -50,14 +56,9 @@
 				</setting>
 			</group>
 			<group id="2">
-				<setting help="30227" id="server_mode" label="30027" type="boolean">
-					<level>1</level>
-					<default>false</default>
-					<control type="toggle"/>
-				</setting>
 				<setting help="30228" id="idle_time" label="30028" type="integer">
 					<level>0</level>
-					<default>120</default>
+					<default>1200</default>
 					<constraints>
 						<options>
 							<option label="30111">30</option>
@@ -68,23 +69,33 @@
 							<option label="30116">180</option>
 							<option label="30117">300</option>
 							<option label="30118">600</option>
+							<option label="30095">1200</option>
+							<option label="30096">1800</option>
+							<option label="30097">2400</option>
+							<option label="30098">3000</option>
+							<option label="30099">3600</option>
 						</options>
 					</constraints>
-					<dependencies>
-						<dependency type="enable">
-							<condition operator="is" setting="server_mode">true</condition>
-						</dependency>
-					</dependencies>
+					<control format="string" type="spinner"/>
+				</setting>
+				<setting help="30402" id="idle_time_playing" label="30401" type="integer">
+					<level>0</level>
+					<default>240</default>
+					<constraints>
+						<options>
+							<option label="30119">20</option>
+							<option label="30120">60</option>
+							<option label="30121">120</option>
+							<option label="30122">240</option>
+							<option label="30123">360</option>
+							<option label="30124">720</option>
+						</options>
+					</constraints>
 					<control format="string" type="spinner"/>
 				</setting>
 				<setting help="30231" id="main_activity" label="30031" type="boolean">
 					<level>1</level>
 					<default>false</default>
-					<dependencies>
-						<dependency type="enable">
-							<condition operator="is" setting="server_mode">true</condition>
-						</dependency>
-					</dependencies>
 					<control type="toggle"/>
 				</setting>
 				<setting help="30241" id="main_activity_start" label="30041" type="integer">
@@ -120,10 +131,7 @@
 					</constraints>
 					<dependencies>
 						<dependency type="enable">
-							<and>
-								<condition operator="is" setting="server_mode">true</condition>
-								<condition operator="is" setting="main_activity">true</condition>
-							</and>
+							<condition operator="is" setting="main_activity">true</condition>
 						</dependency>
 					</dependencies>
 					<control format="string" type="spinner"/>
@@ -161,10 +169,7 @@
 					</constraints>
 					<dependencies>
 						<dependency type="enable">
-							<and>
-								<condition operator="is" setting="server_mode">true</condition>
-								<condition operator="is" setting="main_activity">true</condition>
-							</and>
+							<condition operator="is" setting="main_activity">true</condition>
 						</dependency>
 					</dependencies>
 					<control format="string" type="spinner"/>
@@ -174,10 +179,7 @@
 					<default>false</default>
 					<dependencies>
 						<dependency type="enable">
-							<and>
-								<condition operator="is" setting="server_mode">true</condition>
-								<condition operator="is" setting="main_activity">true</condition>
-							</and>
+							<condition operator="is" setting="main_activity">true</condition>
 						</dependency>
 					</dependencies>
 					<control type="toggle"/>
@@ -195,21 +197,11 @@
 							<option label="30114">90</option>
 						</options>
 					</constraints>
-					<dependencies>
-						<dependency type="enable">
-							<condition operator="is" setting="server_mode">true</condition>
-						</dependency>
-					</dependencies>
 					<control format="string" type="spinner"/>
 				</setting>
 				<setting help="" id="show_next_sched" label="30007" type="boolean">
 					<level>0</level>
 					<default>true</default>
-					<dependencies>
-						<dependency type="enable">
-							<condition operator="is" setting="server_mode">false</condition>
-						</dependency>
-					</dependencies>
 					<control type="toggle"/>
 				</setting>
 				<setting help="30208" id="shutdown_method" label="30008" type="integer">
@@ -241,6 +233,7 @@
 						<options>
 							<option label="30006">0</option>
 							<option label="30026">1</option>
+							<option label="30400">2</option>
 						</options>
 					</constraints>
 					<dependencies>
@@ -254,12 +247,12 @@
 			<group id="3">
 				<setting help="30234" id="check_network" label="30034" type="boolean">
 					<level>0</level>
-					<default>false</default>
+					<default>true</default>
 					<control type="toggle"/>
 				</setting>
 				<setting help="30038" id="monitored_ports" label="30037" type="string">
 					<level>0</level>
-					<default/>
+					<default>22, 445, 873, 1900, 2869, 1349</default>
 					<constraints>
 						<allowempty>true</allowempty>
 					</constraints>
@@ -378,7 +371,7 @@
 				</setting>
 				<setting help="" id="epg_script" label="30058" type="path">
 					<level>1</level>
-					<default>/storage/.kodi/addons/service.rpm/resources/lib/epggrab_ext.sh</default>
+					<default>/storage/.kodi/addons/service.rpm_sr/resources/lib/epggrab_ext.sh</default>
 					<constraints>
 						<allowempty>true</allowempty>
 					</constraints>
