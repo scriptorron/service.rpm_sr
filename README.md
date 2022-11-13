@@ -20,6 +20,7 @@ The "service.rpm_sr" is a fork of the "service.rpm" addon. It handles the power 
 The addon runs an idle timer. Each user activity restarts this idle timer. User activities can be:
 - inputs on keyboard, remote, mouse, game-pad or joystick or
 - one or more of the monitored ports are open.
+
 When the timer expires the addon checks if:
 - a recording is running,
 - an EPG update is running,
@@ -119,7 +120,7 @@ The addon monitors the DLNA/UPnP streaming port to avoid a shutdown during strea
 4. The output will be one or more lines similar to:
 
    `> tcp        0      0 192.168.188.72:1349     192.168.188.30:39782    VERBUNDEN `
-   
+
    Search the line were the second IP address (`192.168.188.30` in the example above) is your rendering device (the one you play the track). The first IP address (`192.168.188.72`) is your Kodi server. The DLNA/UPnP streaming port number follows the IP address of your Kodi server (`1349` in this example).
 
 You need to do step 3 relatively quickly after the start of a new track because many render devices download and buffer the stream within the first seconds and close the streaming port until the playback of the track is finished.
