@@ -270,6 +270,12 @@ def service():
                 setProperty('poweroff', False)
                 break
 
+            # poll network status every second to avoid missing of DLNA/UPnP activity
+            if getNetworkStatus() == isNET:
+                log('Network activity detected, restart idle timer')
+                walker = 0
+
+            # check for user activity
             if xbmc.getGlobalIdleTime() < idle: # getGlobalIdleTime resolution is 1 second
                 if Mon.setting['ignore_useractivity']:
                     log('Ignore user activity due to settings')

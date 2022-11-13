@@ -252,7 +252,7 @@
 				</setting>
 				<setting help="30038" id="monitored_ports" label="30037" type="string">
 					<level>0</level>
-					<default>22, 445, 873, 1900, 2869, 1349</default>
+					<default>22, 445, 873, 1349</default>
 					<constraints>
 						<allowempty>true</allowempty>
 					</constraints>
