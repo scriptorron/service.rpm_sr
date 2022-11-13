@@ -267,6 +267,34 @@ def getProcessPID(process):
 def getPorts(port):
     _syscmd = subprocess.Popen(
         'netstat -an | grep -iE "(established|verbunden)" | grep -v "127.0.0.1" | grep ":{} "'.format(port),
-        shell=True, stdout=subprocess.PIPE)
-    aport = _syscmd.stdout.read().strip()
-    return port if bool(aport) else False
+        shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    # do blocking read of stderr and stdout
+    outs, errs = _syscmd.communicate()
+    if len(errs) > 0:
+        log('Got error from getPorts: {}'.format(errs), xbmc.LOGERROR)
+    #aport = _syscmd.stdout.read().strip()
+    #return port if bool(aport) else False
+    return len(outs) > 0
+
+
+def getManyPorts(ports):
+    try:
+        _syscmd = subprocess.Popen(
+            'netstat -an | grep -iE "(established|verbunden)" | grep -v "127.0.0.1" | grep ":"',
+            shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        # do blocking read of stderr and stdout
+        outs, errs = _syscmd.communicate()
+    except OSError as e:
+        log('getPorts received OSError: {}'.format(e), xbmc.LOGERROR)
+        return False
+    if len(errs) > 0:
+        log('Got error from getPorts: {}'.format(errs), xbmc.LOGERROR)
+        return False
+    lines = outs.split(b"\n")
+    lineSplits = [l.split(b":", maxsplit=1) for l in lines if len(l) > 0]
+    portSplits = [ls[1].split(b" ", maxsplit=1) for ls in lineSplits if len(ls) == 2]
+    openPorts = [p[0] for p in portSplits if len(p) == 2]
+    for port in ports:
+        if bytes(port, encoding="ascii") in openPorts:
+            return True
+    return False

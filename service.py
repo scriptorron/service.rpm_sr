@@ -179,10 +179,9 @@ def getNetworkStatus():
     # check for active network connection(s)
     if Mon.setting['check_network']:
         ports = Mon.setting['monitored_ports'].split(',')
-
-        for port in ports:
-            if getPorts(port.strip()):
-                return isNET
+        ports = [p.strip() for p in ports]
+        if getManyPorts(ports):
+            return isNET
     return isUSR
 
 
