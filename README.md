@@ -153,7 +153,7 @@ and change this to:
 
 Don’t forget to store. Remember that you have to repeat this when the skin has updated.
 
-Please send Comments and Bugreports to 22291722+scriptorron@users.noreply.github.com
+Please send Comments and Bugreports to no_spam@partyheld.de
 
 HINT: If your OS is OpenELEC/LibreELEC you have to turn off ‘Shutdown requires admin privileges’ as OpenELEC/LibreELEC doesn’t need sudo! 
 This should be done automatically by the addon in most cases.
