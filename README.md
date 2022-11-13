@@ -25,6 +25,7 @@ When the timer expires the addon checks if:
 - an EPG update is running,
 - the actual time is within the main activity time,
 - a monitored process is running.
+
 If one of these conditions is fulfilled the idle timer gets restarted again. Otherwise a countdown is shown on the screen, the next wake-up time is set and the HTPC shuts down.
 Default idle time is 20 minutes (when Kodi does nothing) or 4 hours (when Kodi plays a media). The default setup for the monitored ports is for ssh, rsync Samba and DLNA/UPnP.
 
@@ -110,11 +111,15 @@ The addon monitors the DLNA/UPnP streaming port to avoid a shutdown during strea
 1. Start Kodi but do not do DLNA/UPnP streaming.
 2. Wait some time to allow other processes (for instance EPG update, OS update) to finish.
 2. Log in to your HTPC and do on command line:
+
    `netstat -an | grep -iE "(established|verbunden)" | grep -v "127.0.0.1" > temp_before.txt`
 3. Start DLNA/UPnP streaming and do within 5 seconds after playing a new track:
+
    `netstat -an | grep -iE "(established|verbunden)" | grep -v "127.0.0.1" > temp_after.txt ; diff temp_before.txt temp_after.txt`
 4. The output will be one or more lines similar to:
+
    `> tcp        0      0 192.168.188.72:1349     192.168.188.30:39782    VERBUNDEN `
+   
    Search the line were the second IP address (`192.168.188.30` in the example above) is your rendering device (the one you play the track). The first IP address (`192.168.188.72`) is your Kodi server. The DLNA/UPnP streaming port number follows the IP address of your Kodi server (`1349` in this example).
 
 You need to do step 3 relatively quickly after the start of a new track because many render devices download and buffer the stream within the first seconds and close the streaming port until the playback of the track is finished.
