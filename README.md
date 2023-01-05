@@ -28,7 +28,7 @@ When the timer expires the addon checks if:
 - a monitored process is running.
 
 If one of these conditions is fulfilled the idle timer gets restarted again. Otherwise a countdown is shown on the screen, the next wake-up time is set and the HTPC shuts down.
-Default idle time is 20 minutes (when Kodi does nothing) or 4 hours (when Kodi plays a media). The default setup for the monitored ports is for ssh, rsync Samba and DLNA/UPnP.
+Default idle time is 20 minutes (when Kodi does nothing) or 4 hours (when Kodi plays a media). The default setup for the monitored ports is for tvheadend web interface, remote Kodi connection, ssh, rsync Samba and DLNA/UPnP.
 
 Examples for use cases are:
 - After watching TV or a video you go to bed. It does not matter if you stopped playing, the addon will shutdown the HTPC for you.
