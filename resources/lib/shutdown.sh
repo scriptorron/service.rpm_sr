@@ -5,10 +5,16 @@ case "$2" in
     0)
         # shutdown_method "Kodi"
         echo $1 > /sys/class/rtc/rtc0/wakealarm
+        sync
+        sync
+        sync
     ;;
     1)
         # shutdown_method "OS"
         echo $1 > /sys/class/rtc/rtc0/wakealarm
+        sync
+        sync
+        sync
         case "$3" in
             0)
             # shutdown_mode "Power Off"
@@ -27,6 +33,9 @@ case "$2" in
     2)
         # shutdown_method "Y.A.R.D.2"
         yard2wakeup -I $1
+        sync
+        sync
+        sync
         case "$3" in
             0)
             # shutdown_mode "Power Off"
