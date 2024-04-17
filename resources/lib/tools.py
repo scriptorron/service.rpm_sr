@@ -280,7 +280,7 @@ def getPorts(port):
 def getManyPorts(ports):
     try:
         _syscmd = subprocess.Popen(
-            'netstat -an | grep -iE "(established|verbunden)" | grep -v "127.0.0.1" | grep ":"',
+            'ss -ntu | grep -iE "ESTAB" | grep -v "127.0.0.1" | grep ":"',
             shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         # do blocking read of stderr and stdout
         outs, errs = _syscmd.communicate()
@@ -291,9 +291,9 @@ def getManyPorts(ports):
         log('Got error from getPorts: {}'.format(errs), xbmc.LOGERROR)
         return False
     lines = outs.split(b"\n")
-    lineSplits = [l.split(b":", maxsplit=1) for l in lines if len(l) > 0]
-    portSplits = [ls[1].split(b" ", maxsplit=1) for ls in lineSplits if len(ls) == 2]
-    openPorts = [p[0] for p in portSplits if len(p) == 2]
+    lineSplits = [l.split() for l in lines if len(l) > 0]
+    portSplits = [ls[4].rsplit(b":", maxsplit=1) for ls in lineSplits if len(ls) > 4]
+    openPorts = [p[1] for p in portSplits if len(p) == 2]
     for port in ports:
         if bytes(port, encoding="ascii") in openPorts:
             return True
